@@ -11,3 +11,5 @@ class Settings:
         self.chess_distance = 2  # 棋子间隔
         # 计算出棋盘和屏幕的距离
         self.border = (self.screen_height - 2 * (self.chess_distance + self.chess_radius) * (19 - 1)) / 2
+        self.white_color = [255, 255, 255]  # 白棋颜色
+        self.black_color = [0, 0, 0]  # 黑棋颜色
