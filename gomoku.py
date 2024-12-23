@@ -40,6 +40,10 @@ class Gomoku:
                     sys.exit()
             self.screen.fill(self.settings.screen_color)  # 清屏
             self.drawchessboard()  # 生成棋盘
+            # 判断是否存在五子连心
+            res = self.check_win(self.over_pos)
+            if res[0] != 0:
+                continue  # 游戏结束，停止下面的操作
 
             # 获取鼠标坐标信息
             x, y = pygame.mouse.get_pos()
@@ -106,11 +110,44 @@ class Gomoku:
         # 鼠标左键延时作用
         if self.flag:
             self.tim += 1
-        if self.tim % 200 == 0:  # 延时200ms
+        if self.tim % 100 == 0:  # 延时200ms
             self.flag = False
             self.tim = 0
 
+    def check_win(self, over_pos):
+        mp = np.zeros([19, 19], dtype=int)
+        for val in over_pos:
+            x = int((val[0][0] - self.b - self.diff) / self.m)
+            y = int((val[0][1] - self.b) / self.m)
+            if val[1] == self.w_color:
+                mp[x][y] = 2  # 表示白子
+            else:
+                mp[x][y] = 1  # 表示黑子
 
+        directions = [(0, 1), (1, 0), (1, 1), (1, -1)]  # 四个方向的移动向量
+
+        for direction in directions:
+            for i in range(19):
+                for j in range(19):
+                    pos1 = []
+                    pos2 = []
+                    for k in range(5):  # 只需要检查连续的五个位置
+                        ni, nj = i + k * direction[0], j + k * direction[1]
+                        if ni < 0 or ni >= 19 or nj < 0 or nj >= 19:
+                            break
+                        if mp[ni][nj] == 1:
+                            pos1.append([ni, nj])
+                        else:
+                            pos1 = []
+                        if mp[ni][nj] == 2:
+                            pos2.append([ni, nj])
+                        else:
+                            pos2 = []
+                        if len(pos1) >= 5:
+                            return [1, pos1]
+                        if len(pos2) >= 5:
+                            return [2, pos2]
+        return [0, []]
 
 
 if __name__ == '__main__':
