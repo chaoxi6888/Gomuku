@@ -4,7 +4,8 @@ import sys
 # 调用常用关键字常量
 from pygame.locals import QUIT, KEYDOWN
 from settings import Settings
-import numpy as np
+from gamelogic import Gamelogic
+from magic import Magic
 
 
 class Gomoku:
@@ -17,6 +18,11 @@ class Gomoku:
         pygame.display.set_caption('Gomoku')
         # 创建一个Settings对象
         self.settings = Settings()
+        # 创建一个gamelogic对象
+        self.gamelogic = Gamelogic()
+        # 创建一个magic对象
+        self.magic = Magic()
+
         self.distance = self.settings.chess_radius + self.settings.chess_distance  # 定义每根线之间的距离
         self.m = 2 * self.distance  # 间距
         self.w = self.settings.screen_width  # 屏幕宽度
@@ -34,120 +40,45 @@ class Gomoku:
         self.b_color = self.settings.black_color  # 黑棋颜色
         self.flag = False
 
-        while True:  # 不断训练刷新画布
-            for event in pygame.event.get():  # 获取事件，如果鼠标点击右上角关闭按钮或点击esc，关闭
+        while True:
+            # 不断训练刷新画布
+
+            # 获取事件，如果鼠标点击右上角关闭按钮或点击esc，关闭
+            for event in pygame.event.get():
                 if event.type in (QUIT, KEYDOWN):
                     sys.exit()
-            self.screen.fill(self.settings.screen_color)  # 清屏
-            self.drawchessboard()  # 生成棋盘
+            # 清屏
+            self.screen.fill(self.settings.screen_color)
+            # 生成棋盘
+            self.gamelogic.drawchessboard(self.b, self.diff, self.w, self.m, self.screen, self.h,
+                                          self.settings.line_color)
             # 判断是否存在五子连心
-            res = self.check_win(self.over_pos)
+            res = self.gamelogic.check_win(self.over_pos, self.b, self.diff, self.m, self.w_color)
             if res[0] != 0:
                 continue  # 游戏结束，停止下面的操作
 
             # 获取鼠标坐标信息
             x, y = pygame.mouse.get_pos()
-            x, y = self.find_pos(x, y)
-            if self.check_over_pos(x, y, self.over_pos):  # 判断是否可以落子，再显示
-                pygame.draw.rect(self.screen, [0, 229, 238], [x - self.distance, y - self.distance, self.m, self.m],
-                                 2, 1)
-
-            keys_pressed = pygame.mouse.get_pressed()  # 获取鼠标按键信息
+            x, y = self.magic.find_pos(x, y, self.b, self.diff, self.w, self.h, self.m, self.distance)
+            if self.gamelogic.check_over_pos(x, y, self.over_pos):  # 判断是否可以落子，再显示
+                pygame.draw.rect(self.screen, [0, 229, 238], [x - self.distance, y - self.distance,
+                                                              self.m, self.m], 2, 1)
+            # 获取鼠标按键信息
+            keys_pressed = pygame.mouse.get_pressed()
             # 鼠标左键表示落子,tim用来延时的，因为每次循环时间间隔很断，容易导致明明只按了一次左键，却被多次获取，认为我按了多次
             if keys_pressed[0] and self.tim == 0:
                 self.flag = True
-                if self.check_over_pos(x, y, self.over_pos):  # 判断是否可以落子，再落子
+                if self.gamelogic.check_over_pos(x, y, self.over_pos):  # 判断是否可以落子，再落子
                     if len(self.over_pos) % 2 == 0:  # 黑子
                         self.over_pos.append([[x, y], self.b_color])
                     else:
                         self.over_pos.append([[x, y], self.w_color])
-
-            self.time_last()  # 调用延长时间函数
-            for val in self.over_pos:  # 显示所有落下的棋子
-                pygame.draw.circle(self.screen, val[1], val[0], 15, 0)
-            pygame.display.update()  # 刷新显示
-
-    def drawchessboard(self):
-        # 绘制棋盘
-        for i in range(self.b + self.diff, self.w - self.b - self.diff + 1, self.m):
-            # 先画竖线
-            if i == self.b + self.diff or i == self.w - self.b - self.diff:  # 边缘线稍微粗一些
-                pygame.draw.line(self.screen, self.settings.line_color, [i, self.b], [i, self.h - self.b], 4)
-            else:
-                pygame.draw.line(self.screen, self.settings.line_color, [i, self.b], [i, self.h - self.b], 2)
-        for i in range(self.b, self.h - self.b + 1, self.m):
-            # 再画横线
-            if i == self.b or i == self.h - self.b:  # 边缘线稍微粗一些
-                pygame.draw.line(self.screen, self.settings.line_color, [self.b + self.diff, i],
-                                 [self.w - self.b - self.diff, i], 4)
-            else:
-                pygame.draw.line(self.screen, self.settings.line_color, [self.b + self.diff, i],
-                                 [self.w - self.b - self.diff, i], 2)
-        # 在棋盘中心换一个圆点
-        pygame.draw.circle(self.screen, self.settings.line_color,
-                           [self.b + self.diff + self.m * 9, self.b + self.m * 9], 6, 0)
-
-    def find_pos(self, x, y):
-        # 找到显示的可以落子的位置
-        for i in range(self.b + self.diff, self.w, self.m):
-            for j in range(self.b, self.h, self.m):
-                L1 = i - (self.settings.chess_radius + self.settings.chess_distance)
-                L2 = i + (self.settings.chess_radius + self.settings.chess_distance)
-                R1 = j - (self.settings.chess_radius + self.settings.chess_distance)
-                R2 = j + (self.settings.chess_radius + self.settings.chess_distance)
-                if L1 <= x <= L2 and R1 <= y <= R2:
-                    return i, j
-        return x, y
-
-    def check_over_pos(self, x, y, over_pos):
-        # 检查当前的位置是否已经落子
-        for val in over_pos:
-            if val[0][0] == x and val[0][1] == y:
-                return False
-        return True  # 表示没有落子
-
-    def time_last(self):
-        # 鼠标左键延时作用
-        if self.flag:
-            self.tim += 1
-        if self.tim % 100 == 0:  # 延时200ms
-            self.flag = False
-            self.tim = 0
-
-    def check_win(self, over_pos):
-        mp = np.zeros([19, 19], dtype=int)
-        for val in over_pos:
-            x = int((val[0][0] - self.b - self.diff) / self.m)
-            y = int((val[0][1] - self.b) / self.m)
-            if val[1] == self.w_color:
-                mp[x][y] = 2  # 表示白子
-            else:
-                mp[x][y] = 1  # 表示黑子
-
-        directions = [(0, 1), (1, 0), (1, 1), (1, -1)]  # 四个方向的移动向量
-
-        for direction in directions:
-            for i in range(19):
-                for j in range(19):
-                    pos1 = []
-                    pos2 = []
-                    for k in range(5):  # 只需要检查连续的五个位置
-                        ni, nj = i + k * direction[0], j + k * direction[1]
-                        if ni < 0 or ni >= 19 or nj < 0 or nj >= 19:
-                            break
-                        if mp[ni][nj] == 1:
-                            pos1.append([ni, nj])
-                        else:
-                            pos1 = []
-                        if mp[ni][nj] == 2:
-                            pos2.append([ni, nj])
-                        else:
-                            pos2 = []
-                        if len(pos1) >= 5:
-                            return [1, pos1]
-                        if len(pos2) >= 5:
-                            return [2, pos2]
-        return [0, []]
+            # 调用延长时间函数
+            self.gamelogic.time_last(self.flag, self.tim)
+            # 调用显示棋子函数
+            self.gamelogic.showchess(self.over_pos, self.screen)
+            # 刷新显示
+            pygame.display.update()
 
 
 if __name__ == '__main__':
