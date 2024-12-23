@@ -1,5 +1,5 @@
 class Settings:
-    #  用于设置界面与交互的模块
+    #  设置界面参数的类
 
     def __init__(self):
         # 游戏的静态设置

@@ -1,5 +1,5 @@
 class Magic:
-    # 定义图像的类
+    # 管理图像的类
     def find_pos(self, x, y, b, diff, w, h, m, distance):
         # 显示可以落子的位置
         for i in range(b + diff, w, m):
