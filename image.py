@@ -1,4 +1,4 @@
-class Magic:
+class Image:
     # 定义图像的类
     def find_pos(self, x, y, b, diff, w, h, m, distance):
         # 显示可以落子的位置

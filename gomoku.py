@@ -5,7 +5,7 @@ import sys
 from pygame.locals import QUIT, KEYDOWN
 from settings import Settings
 from gamelogic import Gamelogic
-from magic import Magic
+from image import Image
 from music import Music 
 
 class Gomoku:
@@ -20,8 +20,8 @@ class Gomoku:
         self.settings = Settings()
         # 创建一个gamelogic对象
         self.gamelogic = Gamelogic()
-        # 创建一个magic对象
-        self.magic = Magic()
+        # 创建一个image对象
+        self.image = Image()
         # 创建一个Music对象，指定音频文件路径
         self.music = Music("music/play_chess.mp3")
 
@@ -64,7 +64,7 @@ class Gomoku:
 
             # 获取鼠标坐标信息
             x, y = pygame.mouse.get_pos()
-            x, y = self.magic.find_pos(x, y, self.b, self.diff, self.w, self.h, self.m, self.distance)
+            x, y = self.image.find_pos(x, y, self.b, self.diff, self.w, self.h, self.m, self.distance)
             if self.gamelogic.check_over_pos(x, y, self.over_pos):  # 判断是否可以落子，再显示
                 pygame.draw.rect(self.screen, [0, 229, 238], [x - self.distance, y - self.distance,
                                                               self.m, self.m], 2, 1)
