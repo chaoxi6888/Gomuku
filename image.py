@@ -8,8 +8,8 @@ class Image:
 
     def find_pos(self, x, y, b, diff, w, h, m, distance):
         # 显示可以落子的位置
-        for i in range(b + diff, w, m):
-            for j in range(b, h, m):
+        for i in range(b + diff, w - b - diff + 1, m):
+            for j in range(b, h - b + 1, m):
                 L1 = i - distance
                 L2 = i + distance
                 R1 = j - distance

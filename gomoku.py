@@ -67,19 +67,22 @@ class Gomoku:
             # 获取鼠标坐标信息
             x, y = pygame.mouse.get_pos()
             x, y = self.image.find_pos(x, y, self.b, self.diff, self.w, self.h, self.m, self.distance)
-            if self.gamelogic.check_over_pos(x, y, self.over_pos):  # 判断是否可以落子，再显示
-                pygame.draw.rect(self.screen, [0, 229, 238], [x - self.distance, y - self.distance,
-                                                              self.m, self.m], 2, 1)
+            # 先判断鼠标是否在棋盘范围内
+            if self.click_check_board(x, y):
+                if self.gamelogic.check_over_pos(x, y, self.over_pos):  # 判断是否可以落子，再显示
+                    pygame.draw.rect(self.screen, [0, 229, 238], [x - self.distance, y - self.distance,
+                                                                  self.m, self.m], 2, 1)
             # 获取鼠标按键信息
             keys_pressed = pygame.mouse.get_pressed()
             # 鼠标左键表示落子,tim用来延时的，因为每次循环时间间隔很断，容易导致明明只按了一次左键，却被多次获取，认为我按了多次
-            if keys_pressed[0] and self.tim == 0:
-                self.flag = True
-                if self.gamelogic.check_over_pos(x, y, self.over_pos):  # 判断是否可以落子，再落子
-                    if len(self.over_pos) % 2 == 0:  # 黑子
-                        self.over_pos.append([[x, y], self.b_color])
-                    else:
-                        self.over_pos.append([[x, y], self.w_color])
+            if self.click_check_board(x, y):
+                if keys_pressed[0] and self.tim == 0:
+                    self.flag = True
+                    if self.gamelogic.check_over_pos(x, y, self.over_pos):  # 判断是否可以落子，再落子
+                        if len(self.over_pos) % 2 == 0:  # 黑子
+                            self.over_pos.append([[x, y], self.b_color])
+                        else:
+                            self.over_pos.append([[x, y], self.w_color])
             # 调用延长时间函数
             self.time_last()
             # 调用显示棋子函数
@@ -94,6 +97,12 @@ class Gomoku:
         if self.tim % 100 == 0:  # 延时100ms
             self.flag = False
             self.tim = 0
+
+    def click_check_board(self, x, y):
+        if self.b + self.diff <= x <= self.w - self.b - self.diff and self.b <= y <= self.h - self.b:
+            return True
+        else:
+            return False
 
 
 if __name__ == '__main__':
