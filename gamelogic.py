@@ -71,3 +71,10 @@ class Gamelogic:
         # 展示所有棋子
         for val in over_pos:  # 显示所有落下的棋子
             pygame.draw.circle(screen, val[1], val[0], 15, 0)
+
+    def remove_chess(self, image, over_pos, pos, screen, background, b, diff, m, color):
+        # 假设 pos 是一个列表，其中包含要移除棋子的 x 和 y 坐标
+        # background 是屏幕背景的 Surface 对象
+        # 绘制背景来覆盖棋子
+        over_pos.remove([[b + diff + pos[0] * m, b + pos[1] * m], color])
+        image.blit(screen, background, pos[0] - 15, pos[1] - 15)
