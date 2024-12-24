@@ -5,6 +5,8 @@ class Image:
     # 管理图像的类
     def __init__(self):
         self.image1 = pygame.image.load('image/QQ截图20241224123632.png')  # 请替换为你的图片路径
+        self.image2 = pygame.image.load('image/blackchess.png')
+        self.image3 = pygame.image.load('image/whitechess.png')
 
     def find_pos(self, x, y, b, diff, w, h, m, distance):
         # 显示可以落子的位置
