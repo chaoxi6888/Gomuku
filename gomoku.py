@@ -6,7 +6,7 @@ from pygame.locals import QUIT, KEYDOWN
 from settings import Settings
 from gamelogic import Gamelogic
 from magic import Magic
-
+from music import Music 
 
 class Gomoku:
 
@@ -22,6 +22,11 @@ class Gomoku:
         self.gamelogic = Gamelogic()
         # 创建一个magic对象
         self.magic = Magic()
+        # 创建一个Music对象，指定音频文件路径
+        self.music = Music("music/play_chess.mp3")
+
+        # 播放背景音乐
+        Music.play_background_music("music/bgm.wav",0)
 
         self.distance = self.settings.chess_radius + self.settings.chess_distance  # 定义每根线之间的距离
         self.m = 2 * self.distance  # 间距
@@ -73,6 +78,7 @@ class Gomoku:
                         self.over_pos.append([[x, y], self.b_color])
                     else:
                         self.over_pos.append([[x, y], self.w_color])
+                self.music.play_sound()  # 播放音效
             # 调用延长时间函数
             self.gamelogic.time_last(self.flag, self.tim)
             # 调用显示棋子函数
