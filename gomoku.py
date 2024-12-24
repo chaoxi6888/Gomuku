@@ -23,6 +23,7 @@ class Gomoku:
         self.gamelogic = Gamelogic()
         # 创建一个image对象
         self.image = Image()
+        self.round1 = self.image.image1  # 创建一个Round对象
         # 创建两个user对象，即黑白方
         self.user1 = User()  # user1为黑方
         self.user2 = User()  # user2为白方
@@ -53,6 +54,8 @@ class Gomoku:
                     sys.exit()
             # 清屏
             self.screen.fill(self.settings.screen_color)
+            # 生成Round1
+            self.image.blit(self.screen, self.round1, 620, 10)
             # 生成棋盘
             self.gamelogic.drawchessboard(self.b, self.diff, self.w, self.m, self.screen, self.h,
                                           self.settings.line_color)
