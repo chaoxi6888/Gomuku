@@ -5,7 +5,8 @@ import sys
 from pygame.locals import QUIT, KEYDOWN
 from settings import Settings
 from gamelogic import Gamelogic
-from magic import Magic
+from image import Image
+from user import User
 
 
 class Gomoku:
@@ -20,8 +21,11 @@ class Gomoku:
         self.settings = Settings()
         # 创建一个gamelogic对象
         self.gamelogic = Gamelogic()
-        # 创建一个magic对象
-        self.magic = Magic()
+        # 创建一个image对象
+        self.image = Image()
+        # 创建两个user对象，即黑白方
+        self.user1 = User()  # user1为黑方
+        self.user2 = User()  # user2为白方
 
         self.distance = self.settings.chess_radius + self.settings.chess_distance  # 定义每根线之间的距离
         self.m = 2 * self.distance  # 间距
@@ -59,7 +63,7 @@ class Gomoku:
 
             # 获取鼠标坐标信息
             x, y = pygame.mouse.get_pos()
-            x, y = self.magic.find_pos(x, y, self.b, self.diff, self.w, self.h, self.m, self.distance)
+            x, y = self.image.find_pos(x, y, self.b, self.diff, self.w, self.h, self.m, self.distance)
             if self.gamelogic.check_over_pos(x, y, self.over_pos):  # 判断是否可以落子，再显示
                 pygame.draw.rect(self.screen, [0, 229, 238], [x - self.distance, y - self.distance,
                                                               self.m, self.m], 2, 1)
@@ -74,11 +78,19 @@ class Gomoku:
                     else:
                         self.over_pos.append([[x, y], self.w_color])
             # 调用延长时间函数
-            self.gamelogic.time_last(self.flag, self.tim)
+            self.time_last()
             # 调用显示棋子函数
             self.gamelogic.showchess(self.over_pos, self.screen)
             # 刷新显示
             pygame.display.update()
+
+    def time_last(self):
+        # 鼠标左键延时作用
+        if self.flag:
+            self.tim += 1
+        if self.tim % 100 == 0:  # 延时100ms
+            self.flag = False
+            self.tim = 0
 
 
 if __name__ == '__main__':

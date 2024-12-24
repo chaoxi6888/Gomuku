@@ -41,14 +41,6 @@ class Gamelogic:
                             return [2, pos2]
         return [0, []]
 
-    def time_last(self, flag, tim):
-        # 鼠标左键延时作用
-        if flag:
-            tim += 1
-        if tim % 150 == 0:  # 延时150ms
-            flag = False
-            tim = 0
-
     def check_over_pos(self, x, y, over_pos):
         # 检查当前的位置是否已经落子
         for val in over_pos:
