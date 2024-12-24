@@ -32,7 +32,7 @@ class Gomoku:
         self.music = Music("music/play_chess.mp3")
 
         # 播放背景音乐
-        Music.play_background_music("music/bgm.wav",0)
+        Music.play_background_music("music/bgm.wav", 0)
         self.distance = self.settings.chess_radius + self.settings.chess_distance  # 定义每根线之间的距离
         self.m = 2 * self.distance  # 间距
         self.w = self.settings.screen_width  # 屏幕宽度
