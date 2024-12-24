@@ -25,14 +25,20 @@ class Gomoku:
         # 创建一个image对象
         self.image = Image()
         self.round1 = self.image.image1  # 创建一个Round对象
+        self.font1 = pygame.font.Font(None, 48)  # 创建一个字体对象,用来显示黑方分数
+        self.font2 = pygame.font.Font(None, 48)  # 创建一个字体对象，用来显示白方分数
+        # 渲染文本，第一个参数是文本内容，第二个参数是是否抗锯齿，第三个参数是文本颜色
+        self.text_surface1 = self.font1.render('BLACK SCORE:', True, self.settings.black_color)
+        # 渲染文本，第一个参数是文本内容，第二个参数是是否抗锯齿，第三个参数是文本颜色
+        self.text_surface2 = self.font2.render('WHITE SCORE:', True, self.settings.black_color)
         # 创建两个user对象，即黑白方
         self.user1 = User()  # user1为黑方
         self.user2 = User()  # user2为白方
         # 创建一个Music对象，指定音频文件路径
         self.music = Music("music/play_chess.mp3")
-
         # 播放背景音乐
         Music.play_background_music("music/bgm.wav", 0)
+
         self.distance = self.settings.chess_radius + self.settings.chess_distance  # 定义每根线之间的距离
         self.m = 2 * self.distance  # 间距
         self.w = self.settings.screen_width  # 屏幕宽度
@@ -61,6 +67,10 @@ class Gomoku:
             self.screen.fill(self.settings.screen_color)
             # 生成Round1
             self.image.blit(self.screen, self.round1, 620, 10)
+            # 生成黑方score
+            self.image.blit(self.screen, self.text_surface1, 10, 10)
+            # 生成黑方score
+            self.image.blit(self.screen, self.text_surface2, 1060, 10)
             # 生成棋盘
             self.gamelogic.drawchessboard(self.b, self.diff, self.w, self.m, self.screen, self.h,
                                           self.settings.line_color)
