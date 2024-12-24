@@ -75,6 +75,9 @@ class Gomoku:
             self.image.blit(self.screen, self.text_surface1, 100, 40)
             # 生成黑方score
             self.image.blit(self.screen, self.text_surface2, 1150, 40)
+            # 生成卡槽
+            self.image.blit(self.screen, self.image.image4, 0, 210)
+            self.image.blit(self.screen, self.image.image4, 1265, 210)
             # 生成棋盘
             self.gamelogic.drawchessboard(self.b, self.diff, self.w, self.m, self.screen, self.h,
                                           self.settings.line_color)
@@ -114,7 +117,7 @@ class Gomoku:
         # 鼠标左键延时作用
         if self.flag:
             self.tim += 1
-        if self.tim % 100 == 0:  # 延时100ms
+        if self.tim % 50 == 0:  # 延时50ms
             self.flag = False
             self.tim = 0
 
