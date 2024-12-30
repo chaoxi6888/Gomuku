@@ -78,3 +78,26 @@ class Gamelogic:
         # 绘制背景来覆盖棋子
         over_pos.remove([[b + diff + pos[0] * m, b + pos[1] * m], color])
         image.blit(screen, background, pos[0] - 15, pos[1] - 15)
+
+    def roundend(self, gameround, score_b, score_w):
+        # 判断轮次是否结束的函数
+        if gameround == 1:
+            if score_b == 10:
+                return True
+            if score_w == 10:
+                return True
+        if gameround == 2:
+            if score_b == 50:
+                return True
+            if score_w == 50:
+                return True
+        if gameround == 3:
+            if score_b == 100:
+                return True
+            if score_w == 100:
+                return True
+        if gameround == 4:
+            if score_b == 200:
+                return True
+            if score_w == 200:
+                return True

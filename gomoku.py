@@ -27,18 +27,18 @@ class Gomoku:
         self.user2 = User()  # user2为白方
         # 创建一个image对象
         self.image = Image()
-        self.round1 = self.image.image1  # 创建一个Round对象
         self.blackchess = self.image.image2  # 创建一个黑棋图像对象
         self.whitechess = self.image.image3  # 创建一个白棋图像对象
         self.background = self.image.image5
         self.font1 = pygame.font.Font(None, 48)  # 创建一个字体对象,用来显示黑方分数
         self.font2 = pygame.font.Font(None, 48)  # 创建一个字体对象，用来显示白方分数
-        self.font3 = pygame.font.Font(None, 48)
+        self.font3 = pygame.font.Font(None, 80)  # 创建一个字体对象，用来显示回合
         # 创建一个Music对象，指定音频文件路径
         self.music = Music("music/play_chess.mp3")
         # 播放背景音乐
         Music.play_background_music("music/bgm.wav", 0)
 
+        self.round = 1
         self.distance = self.settings.chess_radius + self.settings.chess_distance  # 定义每根线之间的距离
         self.m = 2 * self.distance  # 间距
         self.w = self.settings.screen_width  # 屏幕宽度
@@ -64,20 +64,24 @@ class Gomoku:
                     sys.exit()
             # 清屏
             self.screen.fill(self.settings.screen_color)
-            # 生成Round1,黑棋，白棋
-            self.image.blit(self.screen, self.round1, 620, 10)
+            # 生成黑棋，白棋
             self.image.blit(self.screen, self.blackchess, 10, 10)
             self.image.blit(self.screen, self.whitechess, 1060, 10)
             # 渲染文本，第一个参数是文本内容，第二个参数是是否抗锯齿，第三个参数是文本颜色
-            self.text_surface1 = self.font1.render(f'BLACK SCORE: {self.user1.score[0]}', True,
+            self.text_surface1 = self.font1.render(f'BLACK SCORE: {self.user1.score[self.round]}', True,
                                                    self.settings.black_color)
             # 渲染文本，第一个参数是文本内容，第二个参数是是否抗锯齿，第三个参数是文本颜色
-            self.text_surface2 = self.font2.render(f'WHITE SCORE: {self.user2.score[0]}', True,
+            self.text_surface2 = self.font2.render(f'WHITE SCORE: {self.user2.score[self.round]}', True,
+                                                   self.settings.black_color)
+            # 渲染文本，第一个参数是文本内容，第二个参数是是否抗锯齿，第三个参数是文本颜色
+            self.text_surface3 = self.font3.render(f'ROUND{self.round}', True,
                                                    self.settings.black_color)
             # 生成黑方score
             self.image.blit(self.screen, self.text_surface1, 100, 40)
             # 生成黑方score
             self.image.blit(self.screen, self.text_surface2, 1150, 40)
+            # 生成round
+            self.image.blit(self.screen, self.text_surface3, 627, 20)
             # 生成卡槽
             self.image.blit(self.screen, self.image.image4, 0, 210)
             self.image.blit(self.screen, self.image.image4, 1265, 210)
@@ -88,18 +92,21 @@ class Gomoku:
             res = self.gamelogic.check_win(self.over_pos, self.b, self.diff, self.m, self.w_color)
             if res[0] == 1:
                 # 黑方加分
-                self.user1.score[0] += 10
+                self.user1.score[self.round] += 10
                 for pos in res[1]:
                     # 调用棋子移除函数
                     self.gamelogic.remove_chess(self.image, self.over_pos, pos, self.screen, self.background,
                                                 self.b, self.diff, self.m, self.b_color)
             if res[0] == 2:
                 # 白方加分
-                self.user2.score[0] += 10
+                self.user2.score[self.round] += 10
                 for pos in res[1]:
                     # 调用棋子移除函数
                     self.gamelogic.remove_chess(self.image, self.over_pos, pos, self.screen, self.background,
                                                 self.b, self.diff, self.m, self.w_color)
+
+            "if self.gamelogic.roundend(self.round, self.user1.score[self.round], self.user2.score[self.round]):"
+
             # 获取鼠标坐标信息
             x, y = pygame.mouse.get_pos()
             x, y = self.image.find_pos(x, y, self.b, self.diff, self.w, self.h, self.m, self.distance)
@@ -144,4 +151,4 @@ class Gomoku:
 
 if __name__ == '__main__':
     # 创建一个游戏实例，并运行游戏。
-    game = Gomoku()
+    gameround1 = Gomoku()
