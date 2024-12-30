@@ -20,3 +20,4 @@ class Cards:
         self.round3_lose = [self.ability11, self.ability12]
 
     def func(self):
+        {}
