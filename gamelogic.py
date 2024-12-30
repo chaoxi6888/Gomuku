@@ -77,27 +77,50 @@ class Gamelogic:
         # background 是屏幕背景的 Surface 对象
         # 绘制背景来覆盖棋子
         over_pos.remove([[b + diff + pos[0] * m, b + pos[1] * m], color])
-        image.blit(screen, background, pos[0] - 15, pos[1] - 15)
+        "image.blit(screen, background, pos[0] - 15, pos[1] - 15)"
 
-    def roundend(self, gameround, score_b, score_w):
+    def roundend(self, gameround, score_b, score_w, money_b, money_w):
         # 判断轮次是否结束的函数
+        # 每回合胜利的人获得相应的金钱奖励
         if gameround == 1:
-            if score_b == 10:
+            if score_b == 10:  # 黑方获胜
+                money_b += 100  # 黑方获得100金币
+                money_w += 70  # 白方获得70金币
                 return True
-            if score_w == 10:
+            if score_w == 10:  # 白方获胜
+                money_w += 100  # 白方获得100金币
+                money_b += 70  # 黑方获得70金币
                 return True
         if gameround == 2:
             if score_b == 50:
+                money_b += 100
+                money_w += 70
                 return True
             if score_w == 50:
+                money_w += 100
+                money_b += 70
                 return True
         if gameround == 3:
             if score_b == 100:
+                money_b += 100
+                money_w += 70
                 return True
             if score_w == 100:
+                money_w += 100
+                money_b += 70
                 return True
         if gameround == 4:
             if score_b == 200:
+                money_b += 100
+                money_w += 70
                 return True
             if score_w == 200:
+                money_w += 100
+                money_b += 70
                 return True
+
+    def roundinit(self, gameround, over_pos):
+        if gameround == 2:
+            # 调用棋子移除函数移除所有函数:
+            for pos in list(over_pos):
+                over_pos.remove(pos)

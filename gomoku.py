@@ -104,8 +104,12 @@ class Gomoku:
                     # 调用棋子移除函数
                     self.gamelogic.remove_chess(self.image, self.over_pos, pos, self.screen, self.background,
                                                 self.b, self.diff, self.m, self.w_color)
-
-            "if self.gamelogic.roundend(self.round, self.user1.score[self.round], self.user2.score[self.round]):"
+            # 判断回合是否结束
+            if self.gamelogic.roundend(self.round, self.user1.score[self.round], self.user2.score[self.round],
+                                       self.user1.money, self.user2.money):
+                self.round += 1
+                # 调用回合初始函数
+                self.gamelogic.roundinit(self.round, self.over_pos)
 
             # 获取鼠标坐标信息
             x, y = pygame.mouse.get_pos()
@@ -143,6 +147,7 @@ class Gomoku:
             self.tim = 0
 
     def click_check_board(self, x, y):
+        # 判断鼠标是否在棋盘范围内
         if self.b + self.diff <= x <= self.w - self.b - self.diff and self.b <= y <= self.h - self.b:
             return True
         else:
@@ -151,4 +156,4 @@ class Gomoku:
 
 if __name__ == '__main__':
     # 创建一个游戏实例，并运行游戏。
-    gameround1 = Gomoku()
+    game = Gomoku()
