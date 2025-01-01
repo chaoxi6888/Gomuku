@@ -29,6 +29,7 @@ class Gomoku:
         self.user1 = User()  # user1为黑方
         self.user1.image1 = self.cards.ability1_image  # 黑方第一个技能图像
         self.user2 = User()  # user2为白方
+        self.user2.image1 = self.cards.ability1_image  # 黑方第一个技能图像
         # 创建一个image对象
         self.image = Image()
         self.blackchess = self.image.image2  # 创建一个黑棋图像对象
@@ -56,18 +57,18 @@ class Gomoku:
         self.tim = 0
         # 棋盘要使用的参数
         self.over_pos = []  # 表示已经落子的位置
-        self.over_pos1 = []  # 表示user2限制的位置
-        self.over_pos2 = []  # 表示user1限制的位置
         self.w_color = self.settings.white_color  # 白棋颜色
         self.b_color = self.settings.black_color  # 黑棋颜色
         self.flag = False
+        # 初始化技能按下标志
+        self.click_registered1_1 = 3
+        self.click_registered1_2 = 3
+        self.click_registered1_3 = 3
+        self.click_registered2_1 = 3
+        self.click_registered2_2 = 3
+        self.click_registered2_3 = 3
 
         while True:
-            # 不断训练刷新画
-            # 获取事件，如果鼠标点击右上角关闭按钮或点击esc，关闭
-            for event in pygame.event.get():
-                if event.type in (QUIT, KEYDOWN):
-                    sys.exit()
             # 清屏
             self.screen.fill(self.settings.screen_color)
             # 生成黑棋，白棋
@@ -93,6 +94,7 @@ class Gomoku:
             self.image.blit(self.screen, self.image.image4, 1265, 210)
             # 生成黑方技能
             self.image.blit(self.screen, self.user1.image1, 7, 215)
+            self.image.blit(self.screen, self.user2.image1, 1272, 215)
             # 生成白方技能
 
             # 生成棋盘
@@ -119,8 +121,9 @@ class Gomoku:
                                        self.user1.money, self.user2.money):
                 self.round += 1
                 # 调用回合初始函数
-                self.gamelogic.roundinit(self.round, self.over_pos)
-
+                self.gamelogic.roundinit(self.round, self.over_pos, self.click_registered1_1, self.click_registered1_2,
+                                         self.click_registered1_3, self.click_registered2_1, self.click_registered2_2,
+                                         self.click_registered2_3)
             # 获取鼠标坐标信息
             x, y = pygame.mouse.get_pos()
             x, y = self.image.find_pos(x, y, self.b, self.diff, self.w, self.h, self.m, self.distance)
@@ -130,8 +133,17 @@ class Gomoku:
                 if self.gamelogic.check_over_pos(x, y, self.over_pos):  # 判断是否可以落子，再显示
                     pygame.draw.rect(self.screen, [0, 229, 238], [x - self.distance, y - self.distance,
                                                                   self.m, self.m], 2, 1)
-            # 获取鼠标按键信息
-            keys_pressed = pygame.mouse.get_pressed()
+            # 判断是否点击了技能卡槽,再显示
+            self.side = 0
+            self.n = 0
+            if self.click_check_cards_board(x, y):
+                if self.side == 1:
+                    pygame.draw.rect(self.screen, [0, 229, 238], [0, 214 + 569 / 3 * (self.n - 1),
+                                                                  214, (self.h - 210) / 3], 2, 5)
+                if self.side == 2:
+                    pygame.draw.rect(self.screen, [0, 229, 238], [1265, 214 + 569 / 3 * (self.n - 1),
+                                                                  214, (self.h - 210) / 3], 2, 5)
+            keys_pressed = pygame.mouse.get_pressed()  # 获取鼠标按键信息
             # 鼠标左键表示落子,tim用来延时的，因为每次循环时间间隔很断，容易导致明明只按了一次左键，却被多次获取，认为我按了多次左键
             if self.click_check_board(x, y):
                 if keys_pressed[0] and self.tim == 0:
@@ -142,6 +154,37 @@ class Gomoku:
                         else:  # 白子
                             self.over_pos.append([[x, y], self.w_color])
                     self.music.play_sound()  # 播放音效
+
+            for event in pygame.event.get():
+                self.side = 0
+                self.n = 0
+                if event.type in (QUIT, KEYDOWN):
+                    sys.exit()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    # 检查鼠标点击是否在指定区域内
+                    if self.click_check_cards_board(event.pos[0], event.pos[1]):
+                        if self.side == 1 and self.n == 1 and self.click_registered1_1 > 0:
+                            self.click_registered1_1 -= 1
+                            count = 2
+                            for i in range(len(self.over_pos) - 1, -1, -1):
+                                if self.over_pos[i][1] == self.w_color and count > 0:  # 假设我们要移除白色棋子
+                                    self.over_pos.pop(i)
+                                    count -= 1
+                        if self.side == 1 and self.n == 2 and self.click_registered1_2 > 0:
+                            self.click_registered1_2 -= 1
+                        if self.side == 1 and self.n == 3 and self.click_registered1_3 > 0:
+                            self.click_registered1_3 -= 1
+                            count = 2
+                            for i in range(len(self.over_pos) - 1, -1, -1):
+                                if self.over_pos[i][1] == self.b_color and count > 0:  # 假设我们要移除白色棋子
+                                    self.over_pos.pop(i)
+                                    count -= 1
+                        if self.side == 2 and self.n == 1 and self.click_registered2_1 > 0:
+                            self.click_registered2_1 -= 1
+                        if self.side == 2 and self.n == 2 and self.click_registered2_2 > 0:
+                            self.click_registered2_2 -= 1
+                        if self.side == 2 and self.n == 3 and self.click_registered2_3 > 0:
+                            self.click_registered2_3 -= 1
 
             # 调用延长时间函数
             self.time_last()
@@ -169,23 +212,36 @@ class Gomoku:
         # 判断鼠标是否点击技能卡槽
         # 点击黑方卡槽第一个技能
         if 0 <= x <= 214 and 210 <= y <= 210 + (self.h - 210) / 3:
+            self.side = 1
+            self.n = 1
             return True
         # 点击黑方卡槽第二个技能
         elif 0 <= x <= 214 and 210 + (self.h - 210) / 3 <= y <= 210 + (self.h - 210) / 3 * 2:
+            self.side = 1
+            self.n = 2
             return True
         # 点击黑方卡槽第三个技能
         elif 0 <= x <= 214 and 210 + (self.h - 210) / 3 * 2 <= y <= self.h:
+            self.side = 1
+            self.n = 3
+            return True
+        if 1265 <= x <= self.w and 210 <= y <= 210 + (self.h - 210) / 3:
+            self.side = 2
+            self.n = 1
+            return True
+        # 点击黑方卡槽第二个技能
+        elif 1265 <= x <= self.w and 210 + (self.h - 210) / 3 <= y <= 210 + (self.h - 210) / 3 * 2:
+            self.side = 2
+            self.n = 2
+            return True
+        # 点击黑方卡槽第三个技能
+        elif 1265 <= x <= self.w and 210 + (self.h - 210) / 3 * 2 <= y <= self.h:
+            self.side = 2
+            self.n = 3
             return True
         # 点击其他位置
         else:
             return False
-
-    def fun1(self, user, x, y):
-        # 下一个棋子
-        if user == self.user1:
-            self.over_pos2.append([[x, y], self.b_color])
-        else:
-            self.over_pos2.append([[x, y], self.w_color])
 
 
 if __name__ == '__main__':
