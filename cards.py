@@ -3,8 +3,7 @@ import pygame
 
 class Cards:
     def __init__(self):
-        self.ability2 = None
-        self.ability4 = None
+        self.ability3 = None
         self.ability5 = None
         self.ability6 = None
         """self.ability7 = None
@@ -28,7 +27,7 @@ class Cards:
                     over_pos.pop(i)
                     count -= 1
 
-    class Ability3:
+    class Ability2:
         def __init__(self):
             self.image = pygame.image.load('image/ability1.png')
             self.name = 'ability2'
@@ -38,7 +37,7 @@ class Cards:
             # 技能2可以将一个敌方棋子替换为我方棋子
             {}
 
-    class Ability2:
+    class Ability4:
         def __init__(self):
             self.image = pygame.image.load('image/ability3.png')
             self.name = 'ability3'
