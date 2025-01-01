@@ -8,6 +8,7 @@ from gamelogic import Gamelogic
 from image import Image
 from music import Music
 from user import User
+from cards import Cards
 
 
 class Gomoku:
@@ -22,8 +23,11 @@ class Gomoku:
         self.settings = Settings()
         # 创建一个gamelogic对象
         self.gamelogic = Gamelogic()
+        # 创建一个cards对象
+        self.cards = Cards()
         # 创建两个user对象，即黑白方
         self.user1 = User()  # user1为黑方
+        self.user1.image1 = self.cards.ability1_image  # 黑方第一个技能图像
         self.user2 = User()  # user2为白方
         # 创建一个image对象
         self.image = Image()
@@ -52,6 +56,8 @@ class Gomoku:
         self.tim = 0
         # 棋盘要使用的参数
         self.over_pos = []  # 表示已经落子的位置
+        self.over_pos1 = []  # 表示user2限制的位置
+        self.over_pos2 = []  # 表示user1限制的位置
         self.w_color = self.settings.white_color  # 白棋颜色
         self.b_color = self.settings.black_color  # 黑棋颜色
         self.flag = False
@@ -82,9 +88,13 @@ class Gomoku:
             self.image.blit(self.screen, self.text_surface2, 1150, 40)
             # 生成round
             self.image.blit(self.screen, self.text_surface3, 627, 20)
-            # 生成卡槽
+            # 生成双方卡槽
             self.image.blit(self.screen, self.image.image4, 0, 210)
             self.image.blit(self.screen, self.image.image4, 1265, 210)
+            # 生成黑方技能
+            self.image.blit(self.screen, self.user1.image1, 7, 215)
+            # 生成白方技能
+
             # 生成棋盘
             self.gamelogic.drawchessboard(self.b, self.diff, self.w, self.m, self.screen, self.h,
                                           self.settings.line_color)
@@ -114,23 +124,25 @@ class Gomoku:
             # 获取鼠标坐标信息
             x, y = pygame.mouse.get_pos()
             x, y = self.image.find_pos(x, y, self.b, self.diff, self.w, self.h, self.m, self.distance)
-            # 先判断鼠标是否在棋盘范围内
+
+            # 先判断鼠标是否在棋盘范围内然后再显示
             if self.click_check_board(x, y):
                 if self.gamelogic.check_over_pos(x, y, self.over_pos):  # 判断是否可以落子，再显示
                     pygame.draw.rect(self.screen, [0, 229, 238], [x - self.distance, y - self.distance,
                                                                   self.m, self.m], 2, 1)
             # 获取鼠标按键信息
             keys_pressed = pygame.mouse.get_pressed()
-            # 鼠标左键表示落子,tim用来延时的，因为每次循环时间间隔很断，容易导致明明只按了一次左键，却被多次获取，认为我按了多次
+            # 鼠标左键表示落子,tim用来延时的，因为每次循环时间间隔很断，容易导致明明只按了一次左键，却被多次获取，认为我按了多次左键
             if self.click_check_board(x, y):
                 if keys_pressed[0] and self.tim == 0:
                     self.flag = True
                     if self.gamelogic.check_over_pos(x, y, self.over_pos):  # 判断是否可以落子，再落子
                         if len(self.over_pos) % 2 == 0:  # 黑子
                             self.over_pos.append([[x, y], self.b_color])
-                        else:
+                        else:  # 白子
                             self.over_pos.append([[x, y], self.w_color])
                     self.music.play_sound()  # 播放音效
+
             # 调用延长时间函数
             self.time_last()
             # 调用显示棋子函数
@@ -152,6 +164,28 @@ class Gomoku:
             return True
         else:
             return False
+
+    def click_check_cards_board(self, x, y):
+        # 判断鼠标是否点击技能卡槽
+        # 点击黑方卡槽第一个技能
+        if 0 <= x <= 214 and 210 <= y <= 210 + (self.h - 210) / 3:
+            return True
+        # 点击黑方卡槽第二个技能
+        elif 0 <= x <= 214 and 210 + (self.h - 210) / 3 <= y <= 210 + (self.h - 210) / 3 * 2:
+            return True
+        # 点击黑方卡槽第三个技能
+        elif 0 <= x <= 214 and 210 + (self.h - 210) / 3 * 2 <= y <= self.h:
+            return True
+        # 点击其他位置
+        else:
+            return False
+
+    def fun1(self, user, x, y):
+        # 下一个棋子
+        if user == self.user1:
+            self.over_pos2.append([[x, y], self.b_color])
+        else:
+            self.over_pos2.append([[x, y], self.w_color])
 
 
 if __name__ == '__main__':
