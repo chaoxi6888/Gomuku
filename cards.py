@@ -3,8 +3,10 @@ import pygame
 
 class Cards:
     def __init__(self):
+        # 技能1可以消去两个对方棋子
         self.ability1_image = pygame.image.load('image/ability1.png')
         self.ability2 = None
+        # 技能3可以消去一个对方棋子
         self.ability3_image = pygame.image.load('image/ability3.png')
         self.ability4 = None
         self.ability5 = None
