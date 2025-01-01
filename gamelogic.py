@@ -144,4 +144,4 @@ class Gamelogic:
         # 调用棋子移除函数移除所有函数:
         for pos in list(over_pos):
             over_pos.remove(pos)
-
+        return cr1_1, cr1_2, cr1_3, cr2_1, cr2_2, cr2_3
