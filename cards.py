@@ -28,16 +28,17 @@ class Cards:
                     over_pos.pop(i)
                     count -= 1
 
-    class Ability2:
+    class Ability3:
         def __init__(self):
-            self.image = pygame.image.load('')
+            self.image = pygame.image.load('image/ability1.png')
             self.name = 'ability2'
-            self.description = ''
+            self.description = '替换敌方棋子'
 
-        def ability(self, color, over_pos):
+        def ability(self, x1, y1, color, over_pos, music):
+            # 技能2可以将一个敌方棋子替换为我方棋子
             {}
 
-    class Ability3:
+    class Ability2:
         def __init__(self):
             self.image = pygame.image.load('image/ability3.png')
             self.name = 'ability3'
