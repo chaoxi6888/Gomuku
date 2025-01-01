@@ -17,7 +17,7 @@ class Cards:
         def __init__(self):
             self.image = pygame.image.load('image/ability1.png')
             self.name = 'ability1'
-            self.description = '消去两个对方棋子'
+            self.description = '消去敌方最近下的两个棋子'
 
         def ability(self, color, over_pos):
             # 技能1可以消去两个对方棋子
@@ -51,7 +51,7 @@ class Cards:
         def __init__(self):
             self.image = pygame.image.load('image/ability3.png')
             self.name = 'ability4'
-            self.description = '消去一个对方棋子'
+            self.description = '消去一个敌方最近下的棋子'
 
         def ability(self, color, over_pos):
             # 技能2可以消去一个对方棋子
@@ -65,7 +65,7 @@ class Cards:
         def __init__(self):
             self.image = pygame.image.load('image/ability1.png')
             self.name = 'ability5'
-            self.description = '替换敌方棋子'
+            self.description = '消去一个任意敌方棋子'
 
         def ability(self, x1, y1, color, over_pos, music):
             # 技能5可以将一个敌方棋子替换为我方棋子
