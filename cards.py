@@ -19,5 +19,3 @@ class Cards:
         self.round3_win = [self.ability9, self.ability10]
         self.round3_lose = [self.ability11, self.ability12]
 
-    def func(self):
-        {}
