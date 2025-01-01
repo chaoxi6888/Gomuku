@@ -119,8 +119,15 @@ class Gamelogic:
                 money_b += 70
                 return True
 
-    def roundinit(self, gameround, over_pos):
+    def roundinit(self, gameround, over_pos, cr1_1, cr1_2, cr2_1, cr2_2, cr3_1, cr3_2):  # 初始化函数
         if gameround == 2:
+            cr1_1 = 3
+            cr1_2 = 3
+            cr2_1 = 3
+            cr2_2 = 3
+            cr3_1 = 3
+            cr3_2 = 3
             # 调用棋子移除函数移除所有函数:
             for pos in list(over_pos):
                 over_pos.remove(pos)
+
