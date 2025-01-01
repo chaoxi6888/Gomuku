@@ -27,9 +27,12 @@ class Gomoku:
         self.cards = Cards()
         # 创建两个user对象，即黑白方
         self.user1 = User()  # user1为黑方
-        self.user1.image1 = self.cards.ability1_image  # 黑方第一个技能图像
+        self.u1_cs = self.user1.cards  # 黑方卡槽初始化
+        self.u1_cs[0] = self.cards.Ability1()  # 黑方第一个技能
+
         self.user2 = User()  # user2为白方
-        self.user2.image1 = self.cards.ability3_image  # 黑方第一个技能图像
+        self.u2_cs = self.user2.cards  # 白方卡槽初始化
+        self.u2_cs[0] = self.cards.Ability3()  # 白方第一个技能图像
         # 创建一个image对象
         self.image = Image()
         self.blackchess = self.image.image2  # 创建一个黑棋图像对象
@@ -94,8 +97,8 @@ class Gomoku:
             self.image.blit(self.screen, self.image.image4, 0, 210)
             self.image.blit(self.screen, self.image.image4, 1265, 210)
             # 生成黑方技能
-            self.image.blit(self.screen, self.user1.image1, 7, 215)
-            self.image.blit(self.screen, self.user2.image1, 1272, 215)
+            self.image.blit(self.screen, self.u1_cs[0].image, 7, 215)
+            self.image.blit(self.screen, self.u2_cs[0].image, 1272, 215)
             # 生成白方技能
 
             # 生成箭头
@@ -104,7 +107,7 @@ class Gomoku:
                 self.image.blit(self.screen, self.text_surface4, 214 + 40, self.h - 164)
             else:  # 轮到白子
                 self.image.blit(self.screen, self.referto, 1265 - 144, self.h - 124)
-                self.image.blit(self.screen, self.text_surface4, 1265-144+40, self.h - 164)
+                self.image.blit(self.screen, self.text_surface4, 1265 - 144 + 40, self.h - 164)
             # 生成棋盘
             self.gamelogic.drawchessboard(self.b, self.diff, self.w, self.m, self.screen, self.h,
                                           self.settings.line_color)
@@ -174,11 +177,7 @@ class Gomoku:
                         if self.side == 1 and self.n == 1 and self.click_registered1_1 > 0:
                             self.click_registered1_1 -= 1
                             self.k += 2
-                            count = 2
-                            for i in range(len(self.over_pos) - 1, -1, -1):
-                                if self.over_pos[i][1] == self.w_color and count > 0:  # 假设我们要移除白色棋子
-                                    self.over_pos.pop(i)
-                                    count -= 1
+                            self.u1_cs[0].ability(self.w_color, self.over_pos)
                         if self.side == 1 and self.n == 2 and self.click_registered1_2 > 0:
                             self.click_registered1_2 -= 1
                         if self.side == 1 and self.n == 3 and self.click_registered1_3 > 0:
@@ -186,11 +185,7 @@ class Gomoku:
                         if self.side == 2 and self.n == 1 and self.click_registered2_1 > 0:
                             self.click_registered2_1 -= 1
                             self.k += 1
-                            count = 1
-                            for i in range(len(self.over_pos) - 1, -1, -1):
-                                if self.over_pos[i][1] == self.b_color and count > 0:  # 假设我们要移除白色棋子
-                                    self.over_pos.pop(i)
-                                    count -= 1
+                            self.u2_cs[0].ability(self.b_color, self.over_pos)
                         if self.side == 2 and self.n == 2 and self.click_registered2_2 > 0:
                             self.click_registered2_2 -= 1
                         if self.side == 2 and self.n == 3 and self.click_registered2_3 > 0:
