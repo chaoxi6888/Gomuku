@@ -178,7 +178,6 @@ class Gomoku:
                         if self.side == 1 and self.n == 2 and self.click_registered1_2 > 0:
                             self.flags[1] = True
                             self.click_registered1_2 -= 1
-                            self.k += 2
                         # 技能四
                         if self.side == 2 and self.n == 1 and self.click_registered2_1 > 0:
                             self.flags[3] = True
@@ -190,7 +189,6 @@ class Gomoku:
                         if self.side == 2 and self.n == 2 and self.click_registered2_2 > 0:
                             self.flags[4] = True
                             self.click_registered2_2 -= 1
-                            self.k += 1
                     b, i = self.check_flags()
                     if self.click_check_board(xt, yt) and b:
                         x1, y1 = self.image.find_pos(xt, yt, self.b, self.diff, self.w, self.h, self.m, self.distance)
@@ -203,15 +201,24 @@ class Gomoku:
                                 self.music.play_sound()  # 播放音效
                     elif self.click_check_board(xt, yt) and not b:
                         x2, y2 = self.image.find_pos(xt, yt, self.b, self.diff, self.w, self.h, self.m, self.distance)
-                        for pos in self.over_pos:
-                            if pos[0] == [x2, y2]:
-                                if pos[1] == self.w_color:
-                                    self.over_pos.remove([[x2, y2], self.w_color])
-                                    self.over_pos.append([[x2, y2], self.b_color])
-                                    self.music.play_sound()  # 播放音效
-                                    self.flags[1] = False
-                                    break
-
+                        if i == 1:
+                            for pos in self.over_pos:
+                                if pos[0] == [x2, y2]:
+                                    if pos[1] == self.w_color:
+                                        self.over_pos.remove([[x2, y2], self.w_color])
+                                        self.over_pos.append([[x2, y2], self.b_color])
+                                        self.music.play_sound()  # 播放音效
+                                        self.flags[i] = False
+                                        break
+                        if i == 4:
+                            for pos in self.over_pos:
+                                if pos[0] == [x2, y2]:
+                                    if pos[1] == self.b_color:
+                                        self.over_pos.remove([[x2, y2], self.b_color])
+                                        self.over_pos.append([[x2, y2], self.w_color])
+                                        self.music.play_sound()
+                                        self.flags[i] = False
+                                        break
             # 调用延长时间函数
             "self.time_last()"
             # 调用显示棋子函数
