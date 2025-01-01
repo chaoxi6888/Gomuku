@@ -5,8 +5,7 @@ class Cards:
     def __init__(self):
         self.ability1_image = pygame.image.load('image/ability1.png')
         self.ability2 = None
-        self.ability3 = None
-        self.ability3_image = None
+        self.ability3_image = pygame.image.load('image/ability3.png')
         self.ability4 = None
         self.ability5 = None
         self.ability6 = None

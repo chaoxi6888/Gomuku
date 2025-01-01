@@ -29,15 +29,17 @@ class Gomoku:
         self.user1 = User()  # user1为黑方
         self.user1.image1 = self.cards.ability1_image  # 黑方第一个技能图像
         self.user2 = User()  # user2为白方
-        self.user2.image1 = self.cards.ability1_image  # 黑方第一个技能图像
+        self.user2.image1 = self.cards.ability3_image  # 黑方第一个技能图像
         # 创建一个image对象
         self.image = Image()
         self.blackchess = self.image.image2  # 创建一个黑棋图像对象
         self.whitechess = self.image.image3  # 创建一个白棋图像对象
-        self.background = self.image.image5
+        self.background = self.image.image5  # 创建一个背景图像对象
+        self.referto = self.image.image6  # 创建一个箭头对象
         self.font1 = pygame.font.Font(None, 48)  # 创建一个字体对象,用来显示黑方分数
         self.font2 = pygame.font.Font(None, 48)  # 创建一个字体对象，用来显示白方分数
         self.font3 = pygame.font.Font(None, 80)  # 创建一个字体对象，用来显示回合
+        self.font4 = pygame.font.Font(None, 48)  # 创建一个字体对象，用来显示操作方
         # 创建一个Music对象，指定音频文件路径
         self.music = Music("music/play_chess.mp3")
         # 播放背景音乐
@@ -60,6 +62,7 @@ class Gomoku:
         self.w_color = self.settings.white_color  # 白棋颜色
         self.b_color = self.settings.black_color  # 黑棋颜色
         self.flag = False
+        self.k = 0
         # 初始化技能按下标志
         self.click_registered1_1 = 3
         self.click_registered1_2 = 3
@@ -77,12 +80,10 @@ class Gomoku:
             # 渲染文本，第一个参数是文本内容，第二个参数是是否抗锯齿，第三个参数是文本颜色
             self.text_surface1 = self.font1.render(f'BLACK SCORE: {self.user1.score[self.round]}', True,
                                                    self.settings.black_color)
-            # 渲染文本，第一个参数是文本内容，第二个参数是是否抗锯齿，第三个参数是文本颜色
             self.text_surface2 = self.font2.render(f'WHITE SCORE: {self.user2.score[self.round]}', True,
                                                    self.settings.black_color)
-            # 渲染文本，第一个参数是文本内容，第二个参数是是否抗锯齿，第三个参数是文本颜色
-            self.text_surface3 = self.font3.render(f'ROUND{self.round}', True,
-                                                   self.settings.black_color)
+            self.text_surface3 = self.font3.render(f'ROUND{self.round}', True, self.settings.black_color)
+            self.text_surface4 = self.font4.render(f'This', True, self.settings.black_color)
             # 生成黑方score
             self.image.blit(self.screen, self.text_surface1, 100, 40)
             # 生成黑方score
@@ -97,6 +98,13 @@ class Gomoku:
             self.image.blit(self.screen, self.user2.image1, 1272, 215)
             # 生成白方技能
 
+            # 生成箭头
+            if (len(self.over_pos) + self.k) % 2 == 0:  # 轮到黑子
+                self.image.blit(self.screen, self.referto, 214, self.h - 124)
+                self.image.blit(self.screen, self.text_surface4, 214 + 40, self.h - 164)
+            else:  # 轮到白子
+                self.image.blit(self.screen, self.referto, 1265 - 144, self.h - 124)
+                self.image.blit(self.screen, self.text_surface4, 1265-144+40, self.h - 164)
             # 生成棋盘
             self.gamelogic.drawchessboard(self.b, self.diff, self.w, self.m, self.screen, self.h,
                                           self.settings.line_color)
@@ -149,7 +157,7 @@ class Gomoku:
                 if keys_pressed[0] and self.tim == 0:
                     self.flag = True
                     if self.gamelogic.check_over_pos(x, y, self.over_pos):  # 判断是否可以落子，再落子
-                        if len(self.over_pos) % 2 == 0:  # 黑子
+                        if (len(self.over_pos) + self.k) % 2 == 0:  # 黑子
                             self.over_pos.append([[x, y], self.b_color])
                         else:  # 白子
                             self.over_pos.append([[x, y], self.w_color])
@@ -165,6 +173,7 @@ class Gomoku:
                     if self.click_check_cards_board(event.pos[0], event.pos[1]):
                         if self.side == 1 and self.n == 1 and self.click_registered1_1 > 0:
                             self.click_registered1_1 -= 1
+                            self.k += 2
                             count = 2
                             for i in range(len(self.over_pos) - 1, -1, -1):
                                 if self.over_pos[i][1] == self.w_color and count > 0:  # 假设我们要移除白色棋子
@@ -174,13 +183,14 @@ class Gomoku:
                             self.click_registered1_2 -= 1
                         if self.side == 1 and self.n == 3 and self.click_registered1_3 > 0:
                             self.click_registered1_3 -= 1
-                            count = 2
+                        if self.side == 2 and self.n == 1 and self.click_registered2_1 > 0:
+                            self.click_registered2_1 -= 1
+                            self.k += 1
+                            count = 1
                             for i in range(len(self.over_pos) - 1, -1, -1):
                                 if self.over_pos[i][1] == self.b_color and count > 0:  # 假设我们要移除白色棋子
                                     self.over_pos.pop(i)
                                     count -= 1
-                        if self.side == 2 and self.n == 1 and self.click_registered2_1 > 0:
-                            self.click_registered2_1 -= 1
                         if self.side == 2 and self.n == 2 and self.click_registered2_2 > 0:
                             self.click_registered2_2 -= 1
                         if self.side == 2 and self.n == 3 and self.click_registered2_3 > 0:

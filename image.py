@@ -9,6 +9,7 @@ class Image:
         self.image3 = pygame.image.load('image/whitechess.png')
         self.image4 = pygame.image.load('image/card.png')
         self.image5 = pygame.image.load('image/background.png')
+        self.image6 = pygame.image.load('image/referto.png')
 
     def find_pos(self, x, y, b, diff, w, h, m, distance):
         # 可以落子的位置
