@@ -30,10 +30,12 @@ class Gomoku:
         self.u1_cs = self.user1.cards  # 黑方卡槽初始化
         self.u1_cs[0] = self.cards.Ability1()  # 黑方第一个技能
         self.u1_cs[1] = self.cards.Ability2()  # 黑方第二个技能
-
+        self.u1_cs[2] = self.cards.Ability3()  # 黑方第三个技能
         self.user2 = User()  # user2为白方
         self.u2_cs = self.user2.cards  # 白方卡槽初始化
-        self.u2_cs[0] = self.cards.Ability4()  # 白方第一个技能图像
+        self.u2_cs[0] = self.cards.Ability4()
+        self.u2_cs[1] = self.cards.Ability5()
+        self.u2_cs[2] = self.cards.Ability6()
         # 创建一个image对象
         self.image = Image()
         self.blackchess = self.image.image2  # 创建一个黑棋图像对象
@@ -177,7 +179,9 @@ class Gomoku:
                         # 技能二
                         if self.side == 1 and self.n == 2 and self.click_registered1_2 > 0:
                             self.flags[1] = True
-                            self.click_registered1_2 -= 1
+                        # 技能三
+                        if self.side == 1 and self.n == 3 and self.click_registered1_3 > 0:
+                            self.flags[2] = True
                         # 技能四
                         if self.side == 2 and self.n == 1 and self.click_registered2_1 > 0:
                             self.flags[3] = True
@@ -188,7 +192,9 @@ class Gomoku:
                         # 技能五
                         if self.side == 2 and self.n == 2 and self.click_registered2_2 > 0:
                             self.flags[4] = True
-                            self.click_registered2_2 -= 1
+                        # 技能六
+                        if self.side == 2 and self.n == 3 and self.click_registered2_3 > 0:
+                            self.flags[5] = True
                     b, i = self.check_flags()
                     if self.click_check_board(xt, yt) and b:
                         x1, y1 = self.image.find_pos(xt, yt, self.b, self.diff, self.w, self.h, self.m, self.distance)
@@ -208,19 +214,29 @@ class Gomoku:
                                         self.over_pos.remove([[x2, y2], self.w_color])
                                         self.over_pos.append([[x2, y2], self.b_color])
                                         self.music.play_sound()  # 播放音效
-                                        self.flags[i] = False
+                                        self.click_registered1_2 -= 1
                                         break
+                            self.flags[i] = False
                         if i == 4:
                             for pos in self.over_pos:
                                 if pos[0] == [x2, y2]:
                                     if pos[1] == self.b_color:
                                         self.over_pos.remove([[x2, y2], self.b_color])
-                                        self.over_pos.append([[x2, y2], self.w_color])
-                                        self.music.play_sound()
-                                        self.flags[i] = False
+                                        self.click_registered2_2 -= 1
                                         break
+                            self.flags[i] = False
+                        if i == 2:
+                            self.over_pos = self.u1_cs[2].ability(x2, y2, self.over_pos, self.m)
+                            self.click_registered1_3 -= 1
+                            self.flags[i] = False
+                        if i == 5:
+                            self.over_pos = self.u2_cs[2].ability(x2, y2, self.over_pos, self.m)
+                            self.click_registered2_3 -= 1
+                            self.flags[i] = False
+
             # 调用延长时间函数
             "self.time_last()"
+            print(self.over_pos)
             # 调用显示棋子函数
             self.gamelogic.showchess(self.over_pos, self.screen)
             # 刷新显示

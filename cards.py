@@ -41,11 +41,18 @@ class Cards:
         def __init__(self):
             self.image = pygame.image.load('image/ability1.png')
             self.name = 'ability3'
-            self.description = '摧毁3*3区域'
+            self.description = '摧毁5*5区域'
 
-        def ability(self, x1, y1, color, over_pos, music):
+        def ability(self, center_x, center_y, over_pos, m):
             # 技能3可以摧毁5*5区域
-            {}
+            # 定义5*5区域的边界
+            left = center_x - 2 * m
+            right = center_x + 2 * m
+            top = center_y - 2 * m
+            bottom = center_y + 2 * m
+            # 创建一个新列表，排除在5*5区域内的位置
+            over_pos1 = [pos for pos in over_pos if not (left <= pos[0][0] <= right and top <= pos[0][1] <= bottom)]
+            return over_pos1  # 返回更新后的位置列表
 
     class Ability4:
         def __init__(self):
@@ -77,6 +84,13 @@ class Cards:
             self.name = 'ability6'
             self.description = '摧毁区域'
 
-        def ability(self, x1, y1, color, over_pos, music):
-            # 技能6可以摧毁3*3区域
-            {}
+        def ability(self, center_x, center_y, over_pos, m):
+            # 技能3可以摧毁5*5区域
+            # 定义5*5区域的边界
+            left = center_x - m
+            right = center_x + m
+            top = center_y - m
+            bottom = center_y + m
+            # 创建一个新列表，排除在5*5区域内的位置
+            over_pos1 = [pos for pos in over_pos if not (left <= pos[0][0] <= right and top <= pos[0][1] <= bottom)]
+            return over_pos1  # 返回更新后的位置列表
