@@ -103,8 +103,12 @@ class Gomoku:
             self.image.blit(self.screen, self.image.image4, 1265, 210)
             # 生成黑方技能
             self.image.blit(self.screen, self.u1_cs[0].image, 7, 215)
+            self.image.blit(self.screen, self.u1_cs[1].image, 7, 220 + 569 / 3)
+            self.image.blit(self.screen, self.u1_cs[2].image, 7, 220 + 569 / 3 * 2)
             # 生成白方技能
             self.image.blit(self.screen, self.u2_cs[0].image, 1272, 215)
+            self.image.blit(self.screen, self.u2_cs[1].image, 1272, 220 + 569 / 3)
+            self.image.blit(self.screen, self.u2_cs[2].image, 1272, 220 + 569 / 3 * 2)
 
             # 生成箭头
             if (len(self.over_pos) + self.k) % 2 == 0:  # 轮到黑子
@@ -236,7 +240,6 @@ class Gomoku:
 
             # 调用延长时间函数
             "self.time_last()"
-            print(self.over_pos)
             # 调用显示棋子函数
             self.gamelogic.showchess(self.over_pos, self.screen)
             # 刷新显示

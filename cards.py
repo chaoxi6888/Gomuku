@@ -29,7 +29,7 @@ class Cards:
 
     class Ability2:
         def __init__(self):
-            self.image = pygame.image.load('image/ability1.png')
+            self.image = pygame.image.load('image/ability2.png')
             self.name = 'ability2'
             self.description = '替换敌方棋子'
 
@@ -39,7 +39,7 @@ class Cards:
 
     class Ability3:
         def __init__(self):
-            self.image = pygame.image.load('image/ability1.png')
+            self.image = pygame.image.load('image/ability3.png')
             self.name = 'ability3'
             self.description = '摧毁5*5区域'
 
@@ -56,7 +56,7 @@ class Cards:
 
     class Ability4:
         def __init__(self):
-            self.image = pygame.image.load('image/ability3.png')
+            self.image = pygame.image.load('image/ability4.png')
             self.name = 'ability4'
             self.description = '消去一个敌方最近下的棋子'
 
@@ -70,7 +70,7 @@ class Cards:
 
     class Ability5:
         def __init__(self):
-            self.image = pygame.image.load('image/ability1.png')
+            self.image = pygame.image.load('image/ability5.png')
             self.name = 'ability5'
             self.description = '消去一个任意敌方棋子'
 
@@ -80,7 +80,7 @@ class Cards:
 
     class Ability6:
         def __init__(self):
-            self.image = pygame.image.load('image/ability1.png')
+            self.image = pygame.image.load('image/ability6.png')
             self.name = 'ability6'
             self.description = '摧毁区域'
 
