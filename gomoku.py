@@ -29,10 +29,11 @@ class Gomoku:
         self.user1 = User()  # user1为黑方
         self.u1_cs = self.user1.cards  # 黑方卡槽初始化
         self.u1_cs[0] = self.cards.Ability1()  # 黑方第一个技能
+        self.u1_cs[1] = self.cards.Ability2()  # 黑方第二个技能
 
         self.user2 = User()  # user2为白方
         self.u2_cs = self.user2.cards  # 白方卡槽初始化
-        self.u2_cs[0] = self.cards.Ability3()  # 白方第一个技能图像
+        self.u2_cs[0] = self.cards.Ability4()  # 白方第一个技能图像
         # 创建一个image对象
         self.image = Image()
         self.blackchess = self.image.image2  # 创建一个黑棋图像对象
@@ -73,6 +74,8 @@ class Gomoku:
         self.click_registered2_1 = 3
         self.click_registered2_2 = 3
         self.click_registered2_3 = 3
+        # 初始技能槽列表标志
+        self.flags = [False, False, False, False, False, False]
 
         while True:
             # 清屏
@@ -98,8 +101,8 @@ class Gomoku:
             self.image.blit(self.screen, self.image.image4, 1265, 210)
             # 生成黑方技能
             self.image.blit(self.screen, self.u1_cs[0].image, 7, 215)
-            self.image.blit(self.screen, self.u2_cs[0].image, 1272, 215)
             # 生成白方技能
+            self.image.blit(self.screen, self.u2_cs[0].image, 1272, 215)
 
             # 生成箭头
             if (len(self.over_pos) + self.k) % 2 == 0:  # 轮到黑子
@@ -154,18 +157,7 @@ class Gomoku:
                 if self.side == 2:
                     pygame.draw.rect(self.screen, [0, 229, 238], [1265, 214 + 569 / 3 * (self.n - 1),
                                                                   214, (self.h - 210) / 3], 2, 5)
-            keys_pressed = pygame.mouse.get_pressed()  # 获取鼠标按键信息
-            # 鼠标左键表示落子,tim用来延时的，因为每次循环时间间隔很断，容易导致明明只按了一次左键，却被多次获取，认为我按了多次左键
-            if self.click_check_board(x, y):
-                if keys_pressed[0] and self.tim == 0:
-                    self.flag = True
-                    if self.gamelogic.check_over_pos(x, y, self.over_pos):  # 判断是否可以落子，再落子
-                        if (len(self.over_pos) + self.k) % 2 == 0:  # 黑子
-                            self.over_pos.append([[x, y], self.b_color])
-                        else:  # 白子
-                            self.over_pos.append([[x, y], self.w_color])
-                    self.music.play_sound()  # 播放音效
-
+            # 事件处理
             for event in pygame.event.get():
                 self.side = 0
                 self.n = 0
@@ -173,26 +165,55 @@ class Gomoku:
                     sys.exit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     # 检查鼠标点击是否在指定区域内
-                    if self.click_check_cards_board(event.pos[0], event.pos[1]):
+                    xt, yt = event.pos[0], event.pos[1]
+                    if self.click_check_cards_board(xt, yt):
+                        # 技能一
                         if self.side == 1 and self.n == 1 and self.click_registered1_1 > 0:
+                            self.flags[0] = True
                             self.click_registered1_1 -= 1
                             self.k += 2
                             self.u1_cs[0].ability(self.w_color, self.over_pos)
+                            self.flags[0] = False
+                        # 技能二
                         if self.side == 1 and self.n == 2 and self.click_registered1_2 > 0:
+                            self.flags[1] = True
                             self.click_registered1_2 -= 1
-                        if self.side == 1 and self.n == 3 and self.click_registered1_3 > 0:
-                            self.click_registered1_3 -= 1
+                            self.k += 2
+                        # 技能四
                         if self.side == 2 and self.n == 1 and self.click_registered2_1 > 0:
+                            self.flags[3] = True
                             self.click_registered2_1 -= 1
                             self.k += 1
                             self.u2_cs[0].ability(self.b_color, self.over_pos)
+                            self.flags[3] = False
+                        # 技能五
                         if self.side == 2 and self.n == 2 and self.click_registered2_2 > 0:
+                            self.flags[4] = True
                             self.click_registered2_2 -= 1
-                        if self.side == 2 and self.n == 3 and self.click_registered2_3 > 0:
-                            self.click_registered2_3 -= 1
+                            self.k += 1
+                    b, i = self.check_flags()
+                    if self.click_check_board(xt, yt) and b:
+                        x1, y1 = self.image.find_pos(xt, yt, self.b, self.diff, self.w, self.h, self.m, self.distance)
+                        if self.gamelogic.check_over_pos(x1, y1, self.over_pos):  # 判断是否可以落子，再落子
+                            if (len(self.over_pos) + self.k) % 2 == 0:  # 黑子
+                                self.over_pos.append([[x1, y1], self.b_color])
+                                self.music.play_sound()  # 播放音效
+                            else:  # 白子
+                                self.over_pos.append([[x1, y1], self.w_color])
+                                self.music.play_sound()  # 播放音效
+                    elif self.click_check_board(xt, yt) and not b:
+                        x2, y2 = self.image.find_pos(xt, yt, self.b, self.diff, self.w, self.h, self.m, self.distance)
+                        for pos in self.over_pos:
+                            if pos[0] == [x2, y2]:
+                                if pos[1] == self.w_color:
+                                    self.over_pos.remove([[x2, y2], self.w_color])
+                                    self.over_pos.append([[x2, y2], self.b_color])
+                                    self.music.play_sound()  # 播放音效
+                                    self.flags[1] = False
+                                    break
 
             # 调用延长时间函数
-            self.time_last()
+            "self.time_last()"
             # 调用显示棋子函数
             self.gamelogic.showchess(self.over_pos, self.screen)
             # 刷新显示
@@ -247,6 +268,13 @@ class Gomoku:
         # 点击其他位置
         else:
             return False
+
+    def check_flags(self):
+        # 检查技能槽是否有一个处在点击状态
+        for i in range(6):
+            if self.flags[i]:
+                return False, i
+        return True, None
 
 
 if __name__ == '__main__':
