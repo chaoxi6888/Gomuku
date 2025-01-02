@@ -28,14 +28,16 @@ class Gomoku:
         # 创建两个user对象，即黑白方
         self.user1 = User()  # user1为黑方
         self.u1_cs = self.user1.cards  # 黑方卡槽初始化
-        self.u1_cs[0] = self.cards.Ability1()  # 黑方第一个技能
-        self.u1_cs[1] = self.cards.Ability2()  # 黑方第二个技能
-        self.u1_cs[2] = self.cards.Ability3()  # 黑方第三个技能
         self.user2 = User()  # user2为白方
         self.u2_cs = self.user2.cards  # 白方卡槽初始化
-        self.u2_cs[0] = self.cards.Ability4()
-        self.u2_cs[1] = self.cards.Ability5()
-        self.u2_cs[2] = self.cards.Ability6()
+        # 创建六个技能对象和存放技能的列表
+        self.ability1 = self.cards.Ability1()
+        self.ability2 = self.cards.Ability2()
+        self.ability3 = self.cards.Ability3()
+        self.ability4 = self.cards.Ability4()
+        self.ability5 = self.cards.Ability5()
+        self.ability6 = self.cards.Ability6()
+        self.abilities = [self.ability1, self.ability2, self.ability3, self.ability4, self.ability5, self.ability6]
         # 创建一个image对象
         self.image = Image()
         self.blackchess = self.image.image2  # 创建一个黑棋图像对象
@@ -70,12 +72,12 @@ class Gomoku:
         self.flag = False
         self.k = 0
         # 初始化技能按下标志
-        self.c_r1_1 = 3
-        self.c_r1_2 = 3
-        self.c_r1_3 = 3
-        self.c_r2_1 = 3
-        self.c_r2_2 = 3
-        self.c_r2_3 = 3
+        self.c_r1_1 = 0
+        self.c_r1_2 = 0
+        self.c_r1_3 = 0
+        self.c_r2_1 = 0
+        self.c_r2_2 = 0
+        self.c_r2_3 = 0
         # 初始技能槽列表标志
         self.flags = [False, False, False, False, False, False]
 
@@ -102,13 +104,13 @@ class Gomoku:
             self.image.blit(self.screen, self.image.image4, 0, 210)
             self.image.blit(self.screen, self.image.image4, 1265, 210)
             # 生成黑方技能
-            self.image.blit(self.screen, self.u1_cs[0].image, 7, 215)
-            self.image.blit(self.screen, self.u1_cs[1].image, 7, 220 + 569 / 3)
-            self.image.blit(self.screen, self.u1_cs[2].image, 7, 220 + 569 / 3 * 2)
+            for i in range(3):
+                if self.u1_cs[i] is not None:
+                    self.image.blit(self.screen, self.u1_cs[i].image, 7, 217 + 569 / 3 * i)
             # 生成白方技能
-            self.image.blit(self.screen, self.u2_cs[0].image, 1272, 215)
-            self.image.blit(self.screen, self.u2_cs[1].image, 1272, 220 + 569 / 3)
-            self.image.blit(self.screen, self.u2_cs[2].image, 1272, 220 + 569 / 3 * 2)
+            for i in range(3):
+                if self.u2_cs[i] is not None:
+                    self.image.blit(self.screen, self.u2_cs[i].image, 1272, 217 + 569 / 3 * i)
 
             # 生成箭头
             if (len(self.over_pos) + self.k) % 2 == 0:  # 轮到黑子
@@ -138,7 +140,8 @@ class Gomoku:
                                                 self.b, self.diff, self.m, self.w_color)
             # 判断回合是否结束
             if self.gamelogic.roundend(self.round, self.user1.score[self.round], self.user2.score[self.round],
-                                       self.user1.money, self.user2.money,self.user1.flag,self.user2.flag):
+                                       self.user1.money, self.user2.money, self.user1.flag, self.user2.flag,
+                                       self.u1_cs, self.u2_cs, self.abilities):
                 self.round += 1
                 # 调用回合初始函数
                 (self.c_r1_1, self.c_r1_2, self.c_r1_3, self.c_r2_1,

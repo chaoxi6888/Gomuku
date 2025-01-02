@@ -79,40 +79,52 @@ class Gamelogic:
         over_pos.remove([[b + diff + pos[0] * m, b + pos[1] * m], color])
         "image.blit(screen, background, pos[0] - 15, pos[1] - 15)"
 
-    def roundend(self, gameround, score_b, score_w, money_b, money_w, flag1, flag2):
+    def roundend(self, gameround, score_b, score_w, money_b, money_w, flag1, flag2, user1_cs, user2_cs, abilities):
         # 判断轮次是否结束的函数
         # 每回合胜利的人获得相应的金钱奖励
         if gameround == 1:
             if score_b == 10:  # 黑方获胜
                 money_b += 100  # 黑方获得100金币
                 money_w += 70  # 白方获得70金币
+                user1_cs[0] = abilities[0]  # 黑方获得技能一
+                user2_cs[0] = abilities[3]  # 白方获得技能四
                 flag1[0] = True
                 return True
             if score_w == 10:  # 白方获胜
                 money_w += 100  # 白方获得100金币
                 money_b += 70  # 黑方获得70金币
+                user1_cs[0] = abilities[3]  # 黑方获得技能四
+                user2_cs[0] = abilities[0]  # 白方获得技能一
                 flag2[0] = True
                 return True
         if gameround == 2:
             if score_b == 40:
                 money_b += 100
                 money_w += 70
+                user1_cs[1] = abilities[1]  # 黑方获得技能二
+                user2_cs[1] = abilities[4]  # 白方获得技能五
                 flag1[1] = True
                 return True
             if score_w == 40:
                 money_w += 100
                 money_b += 70
+                user1_cs[1] = abilities[4]  # 黑方获得技能五
+                user2_cs[1] = abilities[1]  # 白方获得技能二
                 flag2[1] = True
                 return True
         if gameround == 3:
             if score_b == 90:
                 money_b += 100
                 money_w += 70
+                user1_cs[2] = abilities[2]  # 黑方获得技能三
+                user2_cs[2] = abilities[5]  # 白方获得技能六
                 flag1[2] = True
                 return True
             if score_w == 90:
                 money_w += 100
                 money_b += 70
+                user1_cs[2] = abilities[5]  # 黑方获得技能六
+                user2_cs[2] = abilities[2]  # 白方获得技能三
                 flag2[2] = True
                 return True
         if gameround == 4:
