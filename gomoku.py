@@ -44,10 +44,8 @@ class Gomoku:
         self.whitechess = self.image.image3  # 创建一个白棋图像对象
         self.background = self.image.image5  # 创建一个背景图像对象
         self.referto = self.image.image6  # 创建一个箭头对象
-        self.font1 = pygame.font.Font(None, 48)  # 创建一个字体对象,用来显示黑方分数
-        self.font2 = pygame.font.Font(None, 48)  # 创建一个字体对象，用来显示白方分数
-        self.font3 = pygame.font.Font(None, 80)  # 创建一个字体对象，用来显示回合
-        self.font4 = pygame.font.Font(None, 48)  # 创建一个字体对象，用来显示操作方
+        self.font1 = pygame.font.Font(None, 48)  # 创建一个字体对象
+        self.font2 = pygame.font.Font(None, 80)  # 创建一个字体对象
         # 创建一个Music对象，指定音频文件路径
         self.music = Music("music/play_chess.mp3")
         # 播放背景音乐
@@ -71,13 +69,14 @@ class Gomoku:
         self.b_color = self.settings.black_color  # 黑棋颜色
         self.flag = False
         self.k = 0
-        # 初始化技能按下标志
+        # 初始化技能按下标志和技能可使用次数
         self.c_r1_1 = 0
         self.c_r1_2 = 0
         self.c_r1_3 = 0
         self.c_r2_1 = 0
         self.c_r2_2 = 0
         self.c_r2_3 = 0
+        self.cr_s = [self.c_r1_1, self.c_r1_2, self.c_r1_3, self.c_r2_1, self.c_r2_2, self.c_r2_3]
         # 初始技能槽列表标志
         self.flags = [False, False, False, False, False, False]
 
@@ -90,10 +89,16 @@ class Gomoku:
             # 渲染文本，第一个参数是文本内容，第二个参数是是否抗锯齿，第三个参数是文本颜色
             self.text_surface1 = self.font1.render(f'BLACK SCORE: {self.user1.score[self.round]}', True,
                                                    self.settings.black_color)
-            self.text_surface2 = self.font2.render(f'WHITE SCORE: {self.user2.score[self.round]}', True,
+            self.text_surface2 = self.font1.render(f'WHITE SCORE: {self.user2.score[self.round]}', True,
                                                    self.settings.black_color)
-            self.text_surface3 = self.font3.render(f'ROUND{self.round}', True, self.settings.black_color)
-            self.text_surface4 = self.font4.render(f'This', True, self.settings.black_color)
+            self.text_surface3 = self.font2.render(f'ROUND{self.round}', True, self.settings.black_color)
+            self.text_surface4 = self.font1.render(f'This', True, self.settings.black_color)
+            self.text_surface5 = self.font1.render(f'{self.cr_s[0]}', True, self.settings.black_color)
+            self.text_surface6 = self.font1.render(f'{self.cr_s[1]}', True, self.settings.black_color)
+            self.text_surface7 = self.font1.render(f'{self.cr_s[2]}', True, self.settings.black_color)
+            self.text_surface8 = self.font1.render(f'{self.cr_s[3]}', True, self.settings.black_color)
+            self.text_surface9 = self.font1.render(f'{self.cr_s[4]}', True, self.settings.black_color)
+            self.text_surface10 = self.font1.render(f'{self.cr_s[5]}', True, self.settings.black_color)
             # 生成黑方score
             self.image.blit(self.screen, self.text_surface1, 100, 40)
             # 生成黑方score
