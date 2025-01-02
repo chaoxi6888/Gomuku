@@ -3,12 +3,7 @@ import pygame
 
 class Cards:
     def __init__(self):
-        self.win1 = None
-        self.win2 = None
-        self.win3 = None
-        self.lose1 = None
-        self.lose2 = None
-        self.lose3 = None
+        self.shop = [self.Ability7(), self.Ability8(), self.Ability9(), self.Ability10()]
 
     class Ability1:
         def __init__(self):
