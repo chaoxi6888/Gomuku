@@ -61,8 +61,7 @@ class Gomoku:
         self.diff = int((self.w - self.h) / 2)  # 宽度与高度的差值
         # 设置屏幕参数
         self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
-        # 创建一个Shop对象
-
+        self.enter_shop = False  # 进入商店标志
         self.clock = pygame.time.Clock()  # 创建一个Clock对象
         self.clock.tick(60)  # 控制游戏以60帧每秒运行
         self.tim = 0
@@ -80,6 +79,10 @@ class Gomoku:
         while True:
             # 清屏
             self.screen.fill(self.settings.screen_color)
+            # 判断是否需要进入商店界面
+            if self.enter_shop:
+                self.enter_shop = False
+                self.shop_screen()
             # 生成黑棋，白棋
             self.image.blit(self.screen, self.blackchess, 10, 10)
             self.image.blit(self.screen, self.whitechess, 1060, 10)
@@ -152,6 +155,8 @@ class Gomoku:
                                        self.user1.money, self.user2.money, self.user1.flag, self.user2.flag,
                                        self.u1_cs, self.u2_cs, self.abilities):
                 self.round += 1
+                if self.round >= 2:
+                    self.enter_shop = True  # 进入商店
                 # 调用回合初始函数
                 self.gamelogic.roundinit(self.round, self.over_pos, self.cr_s)
 
@@ -312,6 +317,29 @@ class Gomoku:
             if self.flags[i]:
                 return False, i
         return True, None
+
+    # 添加一个方法来显示商店界面
+    def shop_screen(self):
+        shop = Shop(self.screen)
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                shop.handle_event(event)
+            shop.draw()
+            pygame.display.flip()
+            # 检查是否需要退出商店界面
+            if self.check_exit_shop():
+                break
+
+    def check_exit_shop(self):
+        # 在这里添加退出商店界面的条件
+        # 例如，按下某个键或点击某个按钮
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_ESCAPE]:  # 按下ESC键退出商店界面
+            return True
+        return False
 
 
 if __name__ == '__main__':
