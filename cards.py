@@ -3,15 +3,12 @@ import pygame
 
 class Cards:
     def __init__(self):
-        self.ability3 = None
-        self.ability5 = None
-        self.ability6 = None
-        """self.ability7 = None
-        self.ability8 = None
-        self.ability9 = None
-        self.ability10 = None
-        self.ability11 = None
-        self.ability12 = None"""
+        self.win1 = None
+        self.win2 = None
+        self.win3 = None
+        self.lose1 = None
+        self.lose2 = None
+        self.lose3 = None
 
     class Ability1:
         def __init__(self):
@@ -94,3 +91,47 @@ class Cards:
             # 创建一个新列表，排除在5*5区域内的位置
             over_pos1 = [pos for pos in over_pos if not (left <= pos[0][0] <= right and top <= pos[0][1] <= bottom)]
             return over_pos1  # 返回更新后的位置列表
+
+    class Ability7:
+        def __init__(self):
+            self.image = pygame.image.load('image/ability6.png')
+            self.name = 'ability7'
+            self.description = '消去一行的棋子'
+
+        def ability(self, color, over_pos):
+            # 技能7可以消去一个对方棋子
+            {}
+
+
+
+    class Ability8:
+        def __init__(self):
+            self.image = pygame.image.load('image/ability6.png')
+            self.name = 'ability8'
+            self.description = '消去一列的棋子'
+
+        def ability(self, color, over_pos):
+            # 技能8可以消去一个对方棋子
+            {}
+
+
+    class Ability9:
+        def __init__(self):
+            self.image = pygame.image.load('image/ability6.png')
+            self.name = 'ability9'
+            self.description = '消去一个对角线的棋子'
+
+        def ability(self, color, over_pos):
+            # 技能9可以消去一个对角线的棋子
+            {}
+
+
+    class Ability10:
+        def __init__(self):
+            self.image = pygame.image.load('image/ability6.png')
+            self.name = 'ability10'
+            self.description = '消去一个5*5十字范围的的棋子'
+
+        def ability(self, color, over_pos):
+            # 技能10可以消去一个5*5十字范围的的棋子
+            {}
