@@ -83,6 +83,7 @@ class Gomoku:
             if self.enter_shop:
                 self.enter_shop = False
                 self.shop_screen()
+                self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
             # 生成黑棋，白棋
             self.image.blit(self.screen, self.blackchess, 10, 10)
             self.image.blit(self.screen, self.whitechess, 1060, 10)
@@ -320,7 +321,7 @@ class Gomoku:
 
     # 添加一个方法来显示商店界面
     def shop_screen(self):
-        shop = Shop(self.screen)
+        shop = Shop()
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
