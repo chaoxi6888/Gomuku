@@ -69,14 +69,8 @@ class Gomoku:
         self.b_color = self.settings.black_color  # 黑棋颜色
         self.flag = False
         self.k = 0
-        # 初始化技能按下标志和技能可使用次数
-        self.c_r1_1 = 0
-        self.c_r1_2 = 0
-        self.c_r1_3 = 0
-        self.c_r2_1 = 0
-        self.c_r2_2 = 0
-        self.c_r2_3 = 0
-        self.cr_s = [self.c_r1_1, self.c_r1_2, self.c_r1_3, self.c_r2_1, self.c_r2_2, self.c_r2_3]
+        # 初始化技能可使用次数
+        self.cr_s = [0, 0, 0, 0, 0, 0]
         # 初始技能槽列表标志
         self.flags = [False, False, False, False, False, False]
 
@@ -99,6 +93,8 @@ class Gomoku:
             self.text_surface8 = self.font1.render(f'{self.cr_s[3]}', True, self.settings.black_color)
             self.text_surface9 = self.font1.render(f'{self.cr_s[4]}', True, self.settings.black_color)
             self.text_surface10 = self.font1.render(f'{self.cr_s[5]}', True, self.settings.black_color)
+            self.text_s1 = [self.text_surface5, self.text_surface6, self.text_surface7]
+            self.text_s2 = [self.text_surface8, self.text_surface9, self.text_surface10]
             # 生成黑方score
             self.image.blit(self.screen, self.text_surface1, 100, 40)
             # 生成黑方score
@@ -116,6 +112,11 @@ class Gomoku:
             for i in range(3):
                 if self.u2_cs[i] is not None:
                     self.image.blit(self.screen, self.u2_cs[i].image, 1272, 217 + 569 / 3 * i)
+
+            # 绘制技能剩余可使用次数
+            for i in range(3):
+                self.image.blit(self.screen, self.text_s1[i], 190, 217 + 569 / 3 * i)
+                self.image.blit(self.screen, self.text_s2[i], 1455, 217 + 569 / 3 * i)
 
             # 生成箭头
             if (len(self.over_pos) + self.k) % 2 == 0:  # 轮到黑子
@@ -149,10 +150,8 @@ class Gomoku:
                                        self.u1_cs, self.u2_cs, self.abilities):
                 self.round += 1
                 # 调用回合初始函数
-                (self.c_r1_1, self.c_r1_2, self.c_r1_3, self.c_r2_1,
-                 self.c_r2_2, self.c_r2_3) = self.gamelogic.roundinit(self.round, self.over_pos, self.c_r1_1,
-                                                                      self.c_r1_2, self.c_r1_3, self.c_r2_1,
-                                                                      self.c_r2_2, self.c_r2_3)
+                self.gamelogic.roundinit(self.round, self.over_pos, self.cr_s)
+
             # 获取鼠标坐标信息
             x, y = pygame.mouse.get_pos()
             x, y = self.image.find_pos(x, y, self.b, self.diff, self.w, self.h, self.m, self.distance)
@@ -183,30 +182,30 @@ class Gomoku:
                     xt, yt = event.pos[0], event.pos[1]
                     if self.click_check_cards_board(xt, yt):
                         # 技能一
-                        if self.side == 1 and self.n == 1 and self.c_r1_1 > 0:
+                        if self.side == 1 and self.n == 1 and self.cr_s[0] > 0:
                             self.flags[0] = True
-                            self.c_r1_1 -= 1
+                            self.cr_s[0] -= 1
                             self.k += 2
                             self.u1_cs[0].ability(self.w_color, self.over_pos)
                             self.flags[0] = False
                         # 技能二
-                        if self.side == 1 and self.n == 2 and self.c_r1_2 > 0:
+                        if self.side == 1 and self.n == 2 and self.cr_s[1] > 0:
                             self.flags[1] = True
                         # 技能三
-                        if self.side == 1 and self.n == 3 and self.c_r1_3 > 0:
+                        if self.side == 1 and self.n == 3 and self.cr_s[2] > 0:
                             self.flags[2] = True
                         # 技能四
-                        if self.side == 2 and self.n == 1 and self.c_r2_1 > 0:
+                        if self.side == 2 and self.n == 1 and self.cr_s[3] > 0:
                             self.flags[3] = True
-                            self.c_r2_1 -= 1
+                            self.cr_s[3] -= 1
                             self.k += 1
                             self.u2_cs[0].ability(self.b_color, self.over_pos)
                             self.flags[3] = False
                         # 技能五
-                        if self.side == 2 and self.n == 2 and self.c_r2_2 > 0:
+                        if self.side == 2 and self.n == 2 and self.cr_s[4] > 0:
                             self.flags[4] = True
                         # 技能六
-                        if self.side == 2 and self.n == 3 and self.c_r2_3 > 0:
+                        if self.side == 2 and self.n == 3 and self.cr_s[5] > 0:
                             self.flags[5] = True
                     b, i = self.check_flags()
                     if self.click_check_board(xt, yt) and b:
@@ -227,7 +226,7 @@ class Gomoku:
                                         self.over_pos.remove([[x2, y2], self.w_color])
                                         self.over_pos.append([[x2, y2], self.b_color])
                                         self.music.play_sound()  # 播放音效
-                                        self.c_r1_2 -= 1
+                                        self.cr_s[1] -= 1
                                         break
                             self.flags[i] = False
                         if i == 4:
@@ -235,16 +234,16 @@ class Gomoku:
                                 if pos[0] == [x2, y2]:
                                     if pos[1] == self.b_color:
                                         self.over_pos.remove([[x2, y2], self.b_color])
-                                        self.c_r2_2 -= 1
+                                        self.cr_s[4] -= 1
                                         break
                             self.flags[i] = False
                         if i == 2:
                             self.over_pos = self.u1_cs[2].ability(x2, y2, self.over_pos, self.m)
-                            self.c_r1_3 -= 1
+                            self.cr_s[2] -= 1
                             self.flags[i] = False
                         if i == 5:
                             self.over_pos = self.u2_cs[2].ability(x2, y2, self.over_pos, self.m)
-                            self.c_r2_3 -= 1
+                            self.cr_s[5] -= 1
                             self.flags[i] = False
 
             # 调用延长时间函数

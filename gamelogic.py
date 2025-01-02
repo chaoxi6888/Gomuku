@@ -139,29 +139,16 @@ class Gamelogic:
                 flag2[3] = True
                 return True
 
-    def roundinit(self, gameround, over_pos, cr1_1, cr1_2, cr1_3, cr2_1, cr2_2, cr2_3):  # 初始化函数
+    def roundinit(self, gameround, over_pos, cr_s):  # 初始化函数
         if gameround == 2:
-            cr1_1 = 2
-            cr1_2 = 2
-            cr1_3 = 2
-            cr2_1 = 2
-            cr2_2 = 2
-            cr2_3 = 2
+            for i in range(6):
+                cr_s[i] = 2
         if gameround == 3:
-            cr1_1 = 3
-            cr1_2 = 3
-            cr1_3 = 3
-            cr2_1 = 3
-            cr2_2 = 3
-            cr2_3 = 3
+            for i in range(6):
+                cr_s[i] = 3
         if gameround == 4:
-            cr1_1 = 5
-            cr1_2 = 5
-            cr1_3 = 5
-            cr2_1 = 5
-            cr2_2 = 5
-            cr2_3 = 5
+            for i in range(6):
+                cr_s[i] = 5
         # 调用棋子移除函数移除所有函数:
         for pos in list(over_pos):
             over_pos.remove(pos)
-        return cr1_1, cr1_2, cr1_3, cr2_1, cr2_2, cr2_3
