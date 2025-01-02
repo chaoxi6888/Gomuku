@@ -156,6 +156,7 @@ class Gomoku:
                                        self.user1.money, self.user2.money, self.user1.flag, self.user2.flag,
                                        self.u1_cs, self.u2_cs, self.abilities):
                 self.round += 1
+                # 第二回合结束才开启商店
                 if self.round >= 2:
                     self.enter_shop = True  # 进入商店
                 # 调用回合初始函数
