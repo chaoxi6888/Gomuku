@@ -9,6 +9,7 @@ from image import Image
 from music import Music
 from user import User
 from cards import Cards
+from shop import Shop
 
 
 class Gomoku:
@@ -60,6 +61,8 @@ class Gomoku:
         self.diff = int((self.w - self.h) / 2)  # 宽度与高度的差值
         # 设置屏幕参数
         self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
+        # 创建一个Shop对象
+
         self.clock = pygame.time.Clock()  # 创建一个Clock对象
         self.clock.tick(60)  # 控制游戏以60帧每秒运行
         self.tim = 0
