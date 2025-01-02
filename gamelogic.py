@@ -79,61 +79,69 @@ class Gamelogic:
         over_pos.remove([[b + diff + pos[0] * m, b + pos[1] * m], color])
         "image.blit(screen, background, pos[0] - 15, pos[1] - 15)"
 
-    def roundend(self, gameround, score_b, score_w, money_b, money_w):
+    def roundend(self, gameround, score_b, score_w, money_b, money_w, flag1, flag2):
         # 判断轮次是否结束的函数
         # 每回合胜利的人获得相应的金钱奖励
         if gameround == 1:
             if score_b == 10:  # 黑方获胜
                 money_b += 100  # 黑方获得100金币
                 money_w += 70  # 白方获得70金币
+                flag1[0] = True
                 return True
             if score_w == 10:  # 白方获胜
                 money_w += 100  # 白方获得100金币
                 money_b += 70  # 黑方获得70金币
+                flag2[0] = True
                 return True
         if gameround == 2:
-            if score_b == 50:
+            if score_b == 40:
                 money_b += 100
                 money_w += 70
+                flag1[1] = True
                 return True
-            if score_w == 50:
+            if score_w == 40:
                 money_w += 100
                 money_b += 70
+                flag2[1] = True
                 return True
         if gameround == 3:
-            if score_b == 100:
+            if score_b == 90:
                 money_b += 100
                 money_w += 70
+                flag1[2] = True
                 return True
-            if score_w == 100:
+            if score_w == 90:
                 money_w += 100
                 money_b += 70
+                flag2[2] = True
                 return True
         if gameround == 4:
-            if score_b == 200:
+            if score_b == 150:
                 money_b += 100
                 money_w += 70
+                flag1[3] = True
                 return True
-            if score_w == 200:
+            if score_w == 150:
                 money_w += 100
                 money_b += 70
+                flag2[3] = True
                 return True
 
     def roundinit(self, gameround, over_pos, cr1_1, cr1_2, cr1_3, cr2_1, cr2_2, cr2_3):  # 初始化函数
         if gameround == 2:
+            cr1_1 = 2
+            cr1_2 = 2
+            cr1_3 = 2
+            cr2_1 = 2
+            cr2_2 = 2
+            cr2_3 = 2
+        if gameround == 3:
             cr1_1 = 3
             cr1_2 = 3
             cr1_3 = 3
             cr2_1 = 3
             cr2_2 = 3
             cr2_3 = 3
-        if gameround == 3:
-            cr1_1 = 4
-            cr1_2 = 4
-            cr1_3 = 4
-            cr2_1 = 4
-            cr2_2 = 4
-            cr2_3 = 4
         if gameround == 4:
             cr1_1 = 5
             cr1_2 = 5

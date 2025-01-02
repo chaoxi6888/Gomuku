@@ -138,7 +138,7 @@ class Gomoku:
                                                 self.b, self.diff, self.m, self.w_color)
             # 判断回合是否结束
             if self.gamelogic.roundend(self.round, self.user1.score[self.round], self.user2.score[self.round],
-                                       self.user1.money, self.user2.money):
+                                       self.user1.money, self.user2.money,self.user1.flag,self.user2.flag):
                 self.round += 1
                 # 调用回合初始函数
                 (self.c_r1_1, self.c_r1_2, self.c_r1_3, self.c_r2_1,
