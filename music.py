@@ -6,6 +6,7 @@ class Music:
         # 初始化Music类并加载音频文件
         # sound_file (str)
 
+        self.sound = None
         pygame.mixer.init()  # 音乐模块初始化
         self.sound_file = sound_file
         self.load_sound()
