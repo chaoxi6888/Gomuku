@@ -129,26 +129,28 @@ class Gamelogic:
                 return True
         if gameround == 4:
             if score_b == 150:
-                money_b += 100
-                money_w += 70
                 flag1[3] = True
                 return True
             if score_w == 150:
-                money_w += 100
-                money_b += 70
                 flag2[3] = True
                 return True
 
     def roundinit(self, gameround, over_pos, cr_s):  # 初始化函数
         if gameround == 2:
-            for i in range(6):
-                cr_s[i] = 2
+            cr_s[0] = 2
+            cr_s[3] = 2
         if gameround == 3:
-            for i in range(6):
-                cr_s[i] = 3
+            cr_s[0] = 3
+            cr_s[3] = 3
+            cr_s[1] = 2
+            cr_s[4] = 2
         if gameround == 4:
-            for i in range(6):
-                cr_s[i] = 5
+            cr_s[0] = 5
+            cr_s[3] = 5
+            cr_s[1] = 4
+            cr_s[4] = 4
+            cr_s[2] = 3
+            cr_s[5] = 3
         # 调用棋子移除函数移除所有函数:
         for pos in list(over_pos):
             over_pos.remove(pos)

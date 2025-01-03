@@ -125,11 +125,15 @@ class Gomoku:
                 self.image.blit(self.screen, self.text_s1[i], 190, 217 + 569 / 3 * i)
                 self.image.blit(self.screen, self.text_s2[i], 1455, 217 + 569 / 3 * i)
 
+            self.bf = False
+            self.wf = False
             # 生成箭头
             if (len(self.over_pos) + self.k) % 2 == 0:  # 轮到黑子
+                self.bf = True
                 self.image.blit(self.screen, self.referto, 214, self.h - 124)
                 self.image.blit(self.screen, self.text_surface4, 214 + 40, self.h - 164)
             else:  # 轮到白子
+                self.wf = True
                 self.image.blit(self.screen, self.referto, 1265 - 144, self.h - 124)
                 self.image.blit(self.screen, self.text_surface4, 1265 - 144 + 40, self.h - 164)
             # 生成棋盘
@@ -157,11 +161,11 @@ class Gomoku:
                                        self.u1_cs, self.u2_cs, self.abilities):
                 self.round += 1
                 # 第二回合结束才开启商店
-                if 2 <= self.round <= 4:
+                if 2 < self.round <= 4:
                     self.enter_shop = True  # 进入商店
-                    self.gamelogic.roundinit(self.round, self.over_pos, self.cr_s)  # 调用回合初始函数
                 if self.round > 4:
                     break
+                self.gamelogic.roundinit(self.round, self.over_pos, self.cr_s)  # 调用回合初始函数
 
             # 获取鼠标坐标信息
             x, y = pygame.mouse.get_pos()
@@ -285,31 +289,32 @@ class Gomoku:
     def click_check_cards_board(self, x, y):
         # 判断鼠标是否点击技能卡槽
         # 点击黑方卡槽第一个技能
-        if 0 <= x <= 214 and 210 <= y <= 210 + (self.h - 210) / 3:
+        if (0 <= x <= 214 and 210 <= y <= 210 + (self.h - 210) / 3) and self.bf:
             self.side = 1
             self.n = 1
             return True
         # 点击黑方卡槽第二个技能
-        elif 0 <= x <= 214 and 210 + (self.h - 210) / 3 <= y <= 210 + (self.h - 210) / 3 * 2:
+        elif (0 <= x <= 214 and 210 + (self.h - 210) / 3 <= y <= 210 + (self.h - 210) / 3 * 2) and self.bf:
             self.side = 1
             self.n = 2
             return True
         # 点击黑方卡槽第三个技能
-        elif 0 <= x <= 214 and 210 + (self.h - 210) / 3 * 2 <= y <= self.h:
+        elif (0 <= x <= 214 and 210 + (self.h - 210) / 3 * 2 <= y <= self.h) and self.bf:
             self.side = 1
             self.n = 3
             return True
-        if 1265 <= x <= self.w and 210 <= y <= 210 + (self.h - 210) / 3:
+        # 点击白方卡槽第一个技能
+        if (1265 <= x <= self.w and 210 <= y <= 210 + (self.h - 210) / 3) and self.wf:
             self.side = 2
             self.n = 1
             return True
-        # 点击黑方卡槽第二个技能
-        elif 1265 <= x <= self.w and 210 + (self.h - 210) / 3 <= y <= 210 + (self.h - 210) / 3 * 2:
+        # 点击白方卡槽第二个技能
+        elif (1265 <= x <= self.w and 210 + (self.h - 210) / 3 <= y <= 210 + (self.h - 210) / 3 * 2) and self.wf:
             self.side = 2
             self.n = 2
             return True
-        # 点击黑方卡槽第三个技能
-        elif 1265 <= x <= self.w and 210 + (self.h - 210) / 3 * 2 <= y <= self.h:
+        # 点击白方卡槽第三个技能
+        elif (1265 <= x <= self.w and 210 + (self.h - 210) / 3 * 2 <= y <= self.h) and self.wf:
             self.side = 2
             self.n = 3
             return True
