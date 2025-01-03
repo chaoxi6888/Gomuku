@@ -383,7 +383,7 @@ class Gomoku:
                                             self.settings.screen_height // 2 + text.get_height() + 150))
         game_over_screen.blit(text_win, (self.settings.screen_width // 2 - text_win.get_width() // 2,
                                          self.settings.screen_height // 2 - text_win.get_height() // 2 - 100))
-        self.image.blit(game_over_screen, win_image, self.settings.screen_width // 2 - text_win.get_width() // 2+300,
+        self.image.blit(game_over_screen, win_image, self.settings.screen_width // 2 - text_win.get_width() // 2 + 300,
                         self.settings.screen_height // 2 - text_win.get_height() // 2 - 100)
 
         pygame.display.flip()
