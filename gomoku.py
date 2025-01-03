@@ -157,10 +157,11 @@ class Gomoku:
                                        self.u1_cs, self.u2_cs, self.abilities):
                 self.round += 1
                 # 第二回合结束才开启商店
-                if self.round >= 2:
+                if 2 <= self.round <= 4:
                     self.enter_shop = True  # 进入商店
-                # 调用回合初始函数
-                self.gamelogic.roundinit(self.round, self.over_pos, self.cr_s)
+                    self.gamelogic.roundinit(self.round, self.over_pos, self.cr_s)  # 调用回合初始函数
+                if self.round > 4:
+                    break
 
             # 获取鼠标坐标信息
             x, y = pygame.mouse.get_pos()
@@ -263,6 +264,9 @@ class Gomoku:
             # 刷新显示
             pygame.display.update()
 
+        # 游戏结束生成积分板
+        self.game_over_screen()
+
     def time_last(self):
         # 鼠标左键延时作用
         if self.flag:
@@ -342,6 +346,54 @@ class Gomoku:
         if keys[pygame.K_ESCAPE]:  # 按下ESC键退出商店界面
             return True
         return False
+
+    def game_over_screen(self):
+        # 创建一个新的屏幕
+        game_over_screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
+        pygame.display.set_caption('Game Over')
+
+        # 显示游戏结束信息
+        font = pygame.font.Font(None, 74)
+        text = font.render('Game Over', True, (255, 0, 0))
+        game_over_screen.fill((153, 204, 255))
+        game_over_screen.blit(text, (self.settings.screen_width // 2 - text.get_width() // 2,
+                                     self.settings.screen_height // 2 - text.get_height() // 2 - 200))
+        win_image = pygame.image.load('image/win.png')
+
+        # 显示其他数据
+        score_text = font.render(f'Final Score: {self.user1.score[4]} - {self.user2.score[4]}', True,
+                                 (255, 255, 255))
+        score_text2 = font.render(f'first:{self.user1.score[1]} - {self.user2.score[1]}', True,
+                                  (255, 255, 255))
+        score_text3 = font.render(f'second:{self.user1.score[2]} - {self.user2.score[2]}', True,
+                                  (255, 255, 255))
+        score_text4 = font.render(f'third:{self.user1.score[3]} - {self.user2.score[3]}', True,
+                                  (255, 255, 255))
+        if self.user1.score[4] > self.user2.score[4]:
+            text_win = font.render('BLACK Win!', True, (255, 255, 255))
+        else:
+            text_win = font.render('WHITE Win!', True, (255, 255, 255))
+        game_over_screen.blit(score_text, (self.settings.screen_width // 2 - score_text.get_width() // 2,
+                                           self.settings.screen_height // 2 + text.get_height()))
+        game_over_screen.blit(score_text2, (self.settings.screen_width // 2 - score_text.get_width() // 2 + 120,
+                                            self.settings.screen_height // 2 + text.get_height() + 50))
+        game_over_screen.blit(score_text3, (self.settings.screen_width // 2 - score_text.get_width() // 2 + 38,
+                                            self.settings.screen_height // 2 + text.get_height() + 100))
+        game_over_screen.blit(score_text4, (self.settings.screen_width // 2 - score_text.get_width() // 2 + 103,
+                                            self.settings.screen_height // 2 + text.get_height() + 150))
+        game_over_screen.blit(text_win, (self.settings.screen_width // 2 - text_win.get_width() // 2,
+                                         self.settings.screen_height // 2 - text_win.get_height() // 2 - 100))
+        self.image.blit(game_over_screen, win_image, self.settings.screen_width // 2 - text_win.get_width() // 2+300,
+                        self.settings.screen_height // 2 - text_win.get_height() // 2 - 100)
+
+        pygame.display.flip()
+
+        # 等待用户退出
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
 
 
 if __name__ == '__main__':
