@@ -109,7 +109,7 @@ class Cards:
             self.image = pygame.image.load('image/ability7.png')
             self.shop_image = pygame.image.load('image/ability7shop.png')
             self.name = '行消除'
-            self.price = 70
+            self.price = 170
             self.x = 230
             self.y = 80
             self.description = '消去一行的棋子'
@@ -124,7 +124,7 @@ class Cards:
             self.image = pygame.image.load('image/ability8.png')
             self.shop_image = pygame.image.load('image/ability8shop.png')
             self.name = '列消除'
-            self.price = 70
+            self.price = 170
             self.x = 485
             self.y = 80
             self.description = '消去一列的棋子'
@@ -139,7 +139,7 @@ class Cards:
             self.image = pygame.image.load('image/ability9.png')
             self.shop_image = pygame.image.load('image/ability9shop.png')
             self.name = '对角消除'
-            self.price = 150
+            self.price = 240
             self.x = 735
             self.y = 80
             self.description = '消去一个对角线的棋子'
@@ -157,15 +157,15 @@ class Cards:
             self.image = pygame.image.load('image/ability10.png')
             self.shop_image = pygame.image.load('image/ability10shop.png')
             self.name = '十字消除'
-            self.price = 150
+            self.price = 240
             self.x = 230
             self.y = 340
-            self.description = '消去一个5*5十字范围的的棋子'
+            self.description = '消去一个9*9十字范围的的棋子'
 
         def ability(self, color, center_x, center_y, over_pos, m):
-            # 技能10可以消去一个5*5十字范围的棋子
+            # 技能10可以消去一个9*9十字范围的棋子
             over_pos1 = [pos for pos in over_pos if not (
-                    (center_x - 2 * m <= pos[0][0] <= center_x + 2 * m and pos[0][1] == center_y) or
-                    (center_y - 2 * m <= pos[0][1] <= center_y + 2 * m and pos[0][0] == center_x)
+                    (center_x - 4 * m <= pos[0][0] <= center_x + 4 * m and pos[0][1] == center_y) or
+                    (center_y - 4 * m <= pos[0][1] <= center_y + 4 * m and pos[0][0] == center_x)
             )]
             return over_pos1
