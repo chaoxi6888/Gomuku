@@ -56,7 +56,7 @@ class Gomoku:
         # 创建一个Music对象，指定音频文件路径
         self.music = Music("music/play_chess.mp3")
         # 播放背景音乐
-        Music.play_background_music("music/bgm.wav", 0)
+        Music.play_background_music("music/bgm.wav", 0.2)
 
         self.round = 1
         self.distance = self.settings.chess_radius + self.settings.chess_distance  # 定义每根线之间的距离
