@@ -53,7 +53,8 @@ class Gomoku:
         self.background = self.image.image5  # 创建一个背景图像对象
         self.referto = self.image.image6  # 创建一个箭头对象
         self.font1 = pygame.font.Font(None, 48)  # 创建一个字体对象
-        self.font2 = pygame.font.Font(None, 80)  # 创建一个字体对象
+        self.font2 = pygame.font.Font('ttf/AiDianFengYaHei（ShangYongMianFei）-2.ttf', 60)  # 创建一个字体对象
+        self.font3 = pygame.font.Font('ttf/AiDianFengYaHei（ShangYongMianFei）-2.ttf', 30)
         # 创建一个Music对象，指定音频文件路径
         self.music = Music("music/play_chess.mp3")
         # 播放背景音乐
@@ -115,7 +116,7 @@ class Gomoku:
             self.text_surface2 = self.font1.render(f'WHITE SCORE: {self.user2.score[self.round]}', True,
                                                    self.settings.black_color)
             self.text_surface3 = self.font2.render(f'ROUND{self.round}', True, self.settings.black_color)
-            self.text_surface4 = self.font1.render(f'This', True, self.settings.black_color)
+            self.text_surface4 = self.font3.render(f'现在轮到你了', True, self.settings.black_color)
             self.text_surface5 = self.font1.render(f'{self.cr_s[0]}', True, self.settings.black_color)
             self.text_surface6 = self.font1.render(f'{self.cr_s[1]}', True, self.settings.black_color)
             self.text_surface7 = self.font1.render(f'{self.cr_s[2]}', True, self.settings.black_color)
@@ -153,11 +154,11 @@ class Gomoku:
             if (len(self.over_pos) + self.k) % 2 == 0:  # 轮到黑子
                 self.bf = True
                 self.image.blit(self.screen, self.referto, 214, self.h - 124)
-                self.image.blit(self.screen, self.text_surface4, 214 + 40, self.h - 164)
+                self.image.blit(self.screen, self.text_surface4, 174 + 40, self.h - 164)
             else:  # 轮到白子
                 self.wf = True
                 self.image.blit(self.screen, self.referto, 1265 - 144, self.h - 124)
-                self.image.blit(self.screen, self.text_surface4, 1265 - 144 + 40, self.h - 164)
+                self.image.blit(self.screen, self.text_surface4, 1185 - 144 + 40, self.h - 164)
             # 生成棋盘
             self.gamelogic.drawchessboard(self.b, self.diff, self.w, self.m, self.screen, self.h,
                                           self.settings.line_color)
