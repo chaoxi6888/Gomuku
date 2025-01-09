@@ -1,5 +1,4 @@
 import pygame
-import sys
 
 
 class Shop:
@@ -45,23 +44,3 @@ class Shop:
             for button_rect, item in self.buttons:
                 if button_rect.collidepoint(event.pos):
                     print(f"Bought {item['name']} for ${item['price']}")
-
-
-def main():
-    pygame.init()
-    pygame.display.set_caption("Shop")
-    shop = Shop()
-
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            shop.handle_event(event)
-
-        shop.draw()
-        pygame.display.flip()
-
-
-if __name__ == "__main__":
-    main()

@@ -341,20 +341,6 @@ class Gomoku:
             if self.check_exit_shop():
                 self.shop1_closed = True
 
-        # 白方的商店
-        shop2 = Shop(self.money[1])
-        while not self.shop2_closed:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
-                shop2.handle_event(event)
-            shop2.draw()
-            pygame.display.flip()
-            # 检查是否需要退出商店界面
-            if self.check_exit_shop():
-                self.shop2_closed = True
-
     def check_exit_shop(self):
         # 在这里添加退出商店界面的条件
         keys = pygame.key.get_pressed()
