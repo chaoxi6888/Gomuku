@@ -31,6 +31,7 @@ class Gomoku:
         self.u1_cs = self.user1.cards  # 黑方卡槽初始化
         self.user2 = User()  # user2为白方
         self.u2_cs = self.user2.cards  # 白方卡槽初始化
+        self.money = [self.user1.money, self.user2.money]  # 双方货币初始化
         # 创建六个技能对象和存放技能的列表
         self.ability1 = self.cards.Ability1()
         self.ability2 = self.cards.Ability2()
@@ -75,15 +76,19 @@ class Gomoku:
         self.cr_s = [0, 0, 0, 0, 0, 0]
         # 初始技能槽列表标志
         self.flags = [False, False, False, False, False, False]
+        # 商店关闭标志
+        self.shop1_closed = False
+        self.shop2_closed = False
 
         while True:
             # 清屏
             self.screen.fill(self.settings.screen_color)
             # 判断是否需要进入商店界面
             if self.enter_shop:
-                self.enter_shop = False
                 self.shop_screen()
                 self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
+                self.enter_shop = False
+
             # 生成黑棋，白棋
             self.image.blit(self.screen, self.blackchess, 10, 10)
             self.image.blit(self.screen, self.whitechess, 1060, 10)
@@ -157,7 +162,7 @@ class Gomoku:
                                                 self.b, self.diff, self.m, self.w_color)
             # 判断回合是否结束
             if self.gamelogic.roundend(self.round, self.user1.score[self.round], self.user2.score[self.round],
-                                       self.user1.money, self.user2.money, self.user1.flag, self.user2.flag,
+                                       self.money, self.user1.flag, self.user2.flag,
                                        self.u1_cs, self.u2_cs, self.abilities):
                 self.round += 1
                 # 第二回合结束才开启商店
@@ -322,22 +327,36 @@ class Gomoku:
 
     # 添加一个方法来显示商店界面
     def shop_screen(self):
-        shop = Shop()
-        while True:
+        # 黑方的商店
+        shop1 = Shop(self.money[0])
+        while not self.shop1_closed:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
-                shop.handle_event(event)
-            shop.draw()
+                shop1.handle_event(event)
+            shop1.draw()
             pygame.display.flip()
             # 检查是否需要退出商店界面
             if self.check_exit_shop():
-                break
+                self.shop1_closed = True
+
+        # 白方的商店
+        shop2 = Shop(self.money[1])
+        while not self.shop2_closed:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                shop2.handle_event(event)
+            shop2.draw()
+            pygame.display.flip()
+            # 检查是否需要退出商店界面
+            if self.check_exit_shop():
+                self.shop2_closed = True
 
     def check_exit_shop(self):
         # 在这里添加退出商店界面的条件
-        # 例如，按下某个键或点击某个按钮
         keys = pygame.key.get_pressed()
         if keys[pygame.K_ESCAPE]:  # 按下ESC键退出商店界面
             return True

@@ -3,7 +3,8 @@ import sys
 
 
 class Shop:
-    def __init__(self):
+    def __init__(self, money):
+        self.money = money
         self.screen = pygame.display.set_mode((1000, 600))
         self.font = pygame.font.Font(None, 36)
         self.background_image = pygame.image.load('image/shop.png')
@@ -35,7 +36,9 @@ class Shop:
 
     def draw_text(self, text, x, y):
         text_surface = self.font.render(text, True, (0, 0, 0))
+        text_surface1 = self.font.render(f'money:{self.money}', True, (0, 0, 0))
         self.screen.blit(text_surface, (x, y))
+        self.screen.blit(text_surface1, (10, 10))
 
     def handle_event(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
