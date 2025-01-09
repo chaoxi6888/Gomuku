@@ -39,6 +39,7 @@ class Gomoku:
         self.ability4 = self.cards.Ability4()
         self.ability5 = self.cards.Ability5()
         self.ability6 = self.cards.Ability6()
+        # 定义商店技能组
         self.ability7 = self.cards.Ability7()
         self.ability8 = self.cards.Ability8()
         self.ability9 = self.cards.Ability9()

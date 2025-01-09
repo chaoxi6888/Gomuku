@@ -118,8 +118,8 @@ class Cards:
 
         def ability(self, color, lis, row, over_pos, m):
             # 技能7可以消去一行棋子
-            over_pos1 = [pos for pos in over_pos if pos[0][1] != row]
-            return over_pos1
+            over_pos = [pos for pos in over_pos if pos[0][1] != row]
+            return over_pos
 
     class Ability8:
         def __init__(self):
@@ -131,10 +131,10 @@ class Cards:
             self.y = 80
             self.description = '消去一列的棋子'
 
-        def ability(self, color, lis, row, over_pos, m):
-            # 技能7可以消去一行棋子
-            over_pos1 = [pos for pos in over_pos if pos[0][1] != lis]
-            return over_pos1
+        def ability(self, color, lis, col, over_pos, m):
+            # 技能8可以消去一列棋子
+            over_pos = [pos for pos in over_pos if pos[0][0] != lis]
+            return over_pos
 
     class Ability9:
         def __init__(self):
