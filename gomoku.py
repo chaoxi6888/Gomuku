@@ -20,7 +20,7 @@ class Gomoku:
         # 初始化pygame
         pygame.init()
         # 设置屏幕标题
-        pygame.display.set_caption('Gomoku')
+        pygame.display.set_caption('技能版五子棋')
         # 创建一个Settings对象
         self.settings = Settings()
         # 创建一个gamelogic对象
@@ -66,8 +66,7 @@ class Gomoku:
         self.h = self.settings.screen_height  # 屏幕高度
         self.b = int(self.settings.border)  # 与上下边框的距离
         self.diff = int((self.w - self.h) / 2)  # 宽度与高度的差值
-        # 设置屏幕参数
-        self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
+
         self.enter_shop1 = False  # 进入黑方商店标志
         self.enter_shop2 = False  # 进入白方商店标志
         self.clock = pygame.time.Clock()  # 创建一个Clock对象
@@ -85,8 +84,10 @@ class Gomoku:
         self.bflag = [False, False]
         self.staflag = False
         # 初始化游戏开始屏幕
-        self.start_screen = StartScreen(self.screen)
+        self.start_screen = StartScreen()
         self.show_start_screen()
+        # 设置屏幕参数
+        self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
 
         while self.staflag:
             # 清屏

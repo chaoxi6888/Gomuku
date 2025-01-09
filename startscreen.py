@@ -3,8 +3,9 @@ import sys
 
 
 class StartScreen:
-    def __init__(self, screen):
-        self.screen = screen
+    def __init__(self):
+        self.screen = pygame.display.set_mode((1024, 834))
+        self.background_image = pygame.image.load('image/游戏主界面.png')
         self.font = pygame.font.Font(None, 74)
         self.buttons = {
             "start": pygame.Rect(540, 200, 200, 50),
@@ -13,7 +14,7 @@ class StartScreen:
         }
 
     def draw(self):
-        self.screen.fill((153, 204, 255))
+        self.screen.blit(self.background_image, (0, 0))
         for text, rect in self.buttons.items():
             pygame.draw.rect(self.screen, (0, 0, 0), rect)
             button_text = self.font.render(text.capitalize(), True, (255, 255, 255))
