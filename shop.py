@@ -1,4 +1,7 @@
 import pygame
+import tkinter as tk
+from tkinter import simpledialog, messagebox
+
 
 class Shop:
     def __init__(self, money, cards):
@@ -15,9 +18,9 @@ class Shop:
         items = []
         for card in self.cards.shop_list:
             item = {
-                "name": card.name,
+                "name": card,
                 "price": card.price,
-                "rect": pygame.Rect(card.x-28, card.y-2, 100, 100),
+                "rect": pygame.Rect(card.x - 28, card.y - 2, 100, 100),
                 "image": card.shop_image
             }
             items.append(item)
@@ -34,7 +37,7 @@ class Shop:
         self.screen.blit(self.background_image, (0, 0))
         for item in self.items:
             self.screen.blit(item["image"], item["rect"])  # 绘制图像
-            self.draw_text(f"cost-{item['price']}", item["rect"].x+40, item["rect"].y + 140)
+            self.draw_text(f"cost-{item['price']}", item["rect"].x + 40, item["rect"].y + 140)
         for button_rect, _ in self.buttons:
             pygame.draw.rect(self.screen, (0, 255, 0), button_rect)
             self.draw_text("Buy", button_rect.x + 15, button_rect.y + 10)
@@ -45,12 +48,23 @@ class Shop:
         self.screen.blit(text_surface, (x, y))
         self.screen.blit(text_surface1, (10, 10))
 
-    def handle_event(self, event):
+    def handle_event(self, event, cs):
         if event.type == pygame.MOUSEBUTTONDOWN:
             for button_rect, item in self.buttons:
                 if button_rect.collidepoint(event.pos):
                     if self.money >= item['price']:
-                        self.money -= item['price']
-                        print(f"Bought {item['name']} for ${item['price']}")
+                        root = tk.Tk()
+                        root.withdraw()  # 隐藏主窗口
+                        skill_number = simpledialog.askinteger("替换技能", "输入要替换的技能编号 (1-3):")
+                        root.destroy()
+                        if skill_number in [1, 2, 3]:
+                            self.money -= item['price']
+                            cs[skill_number - 1] = item['name']  # 替换技能
+                            print(f"用 {item['name']} 替换了技能 {skill_number}，花费 ${item['price']}")
+                        else:
+                            messagebox.showinfo("无效输入", "请输入有效的技能编号 (1-3)。")
                     else:
-                        print("Not enough money")
+                        root = tk.Tk()
+                        root.withdraw()  # 隐藏主窗口
+                        messagebox.showinfo("购买失败", "没有足够的货币来购买")
+                        root.destroy()

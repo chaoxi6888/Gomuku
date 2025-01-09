@@ -39,6 +39,10 @@ class Gomoku:
         self.ability4 = self.cards.Ability4()
         self.ability5 = self.cards.Ability5()
         self.ability6 = self.cards.Ability6()
+        self.ability7 = self.cards.Ability7()
+        self.ability8 = self.cards.Ability8()
+        self.ability9 = self.cards.Ability9()
+        self.ability10 = self.cards.Ability10()
         self.abilities = [self.ability1, self.ability2, self.ability3, self.ability4, self.ability5, self.ability6]
         # 创建一个image对象
         self.image = Image()
@@ -333,7 +337,7 @@ class Gomoku:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
-                shop1.handle_event(event)
+                shop1.handle_event(event, self.u1_cs)
             shop1.draw()
             pygame.display.flip()
             # 检查是否需要退出商店界面
@@ -349,7 +353,7 @@ class Gomoku:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
-                shop2.handle_event(event)
+                shop2.handle_event(event, self.u2_cs)
             shop2.draw()
             pygame.display.flip()
             # 检查是否需要退出商店界面
@@ -360,7 +364,7 @@ class Gomoku:
         # 获取当前时间
         current_time = pygame.time.get_ticks()
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_ESCAPE] and current_time - self.last_esc_time > 5000:  # 1000 毫秒 = 1 秒
+        if keys[pygame.K_ESCAPE] and current_time - self.last_esc_time > 2000:  # 1000 毫秒 = 1 秒
             self.last_esc_time = current_time  # 更新上次按下 ESC 键的时间
             return True
         return False
