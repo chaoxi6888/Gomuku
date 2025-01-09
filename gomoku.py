@@ -62,7 +62,8 @@ class Gomoku:
         self.diff = int((self.w - self.h) / 2)  # 宽度与高度的差值
         # 设置屏幕参数
         self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
-        self.enter_shop = False  # 进入商店标志
+        self.enter_shop1 = False  # 进入黑方商店标志
+        self.enter_shop2 = False  # 进入白方商店标志
         self.clock = pygame.time.Clock()  # 创建一个Clock对象
         self.clock.tick(60)  # 控制游戏以60帧每秒运行
         self.tim = 0
@@ -79,16 +80,22 @@ class Gomoku:
         # 商店关闭标志
         self.shop1_closed = False
         self.shop2_closed = False
+        self.last_esc_time = 0  # 初始化 ESC 键的计时器
 
         while True:
             # 清屏
             self.screen.fill(self.settings.screen_color)
-            # 判断是否需要进入商店界面
-            if self.enter_shop:
-                self.shop_screen()
-                self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
-                self.enter_shop = False
+            while self.enter_shop1 or self.enter_shop2:
+                if self.enter_shop1:
+                    self.shop_screen1()
+                    self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
+                    self.enter_shop1 = False
+                if self.enter_shop2:
+                    self.shop_screen2()
+                    self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
+                    self.enter_shop2 = False
 
+            pygame.display.set_caption('技能版五子棋')
             # 生成黑棋，白棋
             self.image.blit(self.screen, self.blackchess, 10, 10)
             self.image.blit(self.screen, self.whitechess, 1060, 10)
@@ -167,7 +174,8 @@ class Gomoku:
                 self.round += 1
                 # 第二回合结束才开启商店
                 if 2 < self.round <= 4:
-                    self.enter_shop = True  # 进入商店
+                    self.enter_shop1 = True  # 进入商店
+                    self.enter_shop2 = True
                 if self.round > 4:
                     break
                 self.gamelogic.roundinit(self.round, self.over_pos, self.cr_s)  # 调用回合初始函数
@@ -326,8 +334,9 @@ class Gomoku:
         return True, None
 
     # 添加一个方法来显示商店界面
-    def shop_screen(self):
+    def shop_screen1(self):
         # 黑方的商店
+        pygame.display.set_caption('黑方shop')
         shop1 = Shop(self.money[0])
         while not self.shop1_closed:
             for event in pygame.event.get():
@@ -338,13 +347,31 @@ class Gomoku:
             shop1.draw()
             pygame.display.flip()
             # 检查是否需要退出商店界面
-            if self.check_exit_shop():
+            if self.check_exit_shop1():
                 self.shop1_closed = True
 
-    def check_exit_shop(self):
-        # 在这里添加退出商店界面的条件
+    def shop_screen2(self):
+        # 白方的商店
+        pygame.display.set_caption('白方shop')
+        shop2 = Shop(self.money[1])
+        while not self.shop2_closed:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                shop2.handle_event(event)
+            shop2.draw()
+            pygame.display.flip()
+            # 检查是否需要退出商店界面
+            if self.check_exit_shop1():
+                self.shop2_closed = True
+
+    def check_exit_shop1(self):
+        # 获取当前时间
+        current_time = pygame.time.get_ticks()
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_ESCAPE]:  # 按下ESC键退出商店界面
+        if keys[pygame.K_ESCAPE] and current_time - self.last_esc_time > 5000:  # 1000 毫秒 = 1 秒
+            self.last_esc_time = current_time  # 更新上次按下 ESC 键的时间
             return True
         return False
 
