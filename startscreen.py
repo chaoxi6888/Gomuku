@@ -25,3 +25,7 @@ class StartScreen:
                 if rect.collidepoint(event.pos):
                     return text
         return None
+
+    def show_settings(self):
+        # 显示设置界面
+        pass

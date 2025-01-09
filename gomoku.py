@@ -10,6 +10,7 @@ from music import Music
 from user import User
 from cards import Cards
 from shop import Shop
+from startscreen import StartScreen
 
 
 class Gomoku:
@@ -82,8 +83,12 @@ class Gomoku:
         self.flags = [False, False, False, False, False, False]
         self.last_esc_time = 0  # 初始化 ESC 键的计时器
         self.bflag = [False, False]
+        self.staflag = False
+        # 初始化游戏开始屏幕
+        self.start_screen = StartScreen(self.screen)
+        self.show_start_screen()
 
-        while True:
+        while self.staflag:
             # 清屏
             self.screen.fill(self.settings.screen_color)
             # 商店关闭标志
@@ -291,7 +296,8 @@ class Gomoku:
             pygame.display.update()
 
         # 游戏结束生成积分板
-        self.game_over_screen()
+        if self.staflag:
+            self.game_over_screen()
 
     def click_check_board(self, x, y):
         # 判断鼠标是否在棋盘范围内
@@ -432,6 +438,24 @@ class Gomoku:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+
+    def show_start_screen(self):
+        while not self.staflag:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                action = self.start_screen.handle_event(event)
+                if action == "start":
+                    self.staflag = True
+                    break
+                elif action == "settings":
+                    self.start_screen.show_settings()
+                elif action == "quit":
+                    pygame.quit()
+                    sys.exit()
+            self.start_screen.draw()
+            pygame.display.flip()
 
 
 if __name__ == '__main__':
