@@ -53,7 +53,7 @@ class Shop:
             for button_rect, item in self.buttons:
                 if button_rect.collidepoint(event.pos):
                     if self.money >= item['price']:
-                        root = tk.Tk()
+                        """root = tk.Tk()
                         root.withdraw()  # 隐藏主窗口
                         skill_number = simpledialog.askinteger("替换技能", "输入要替换的技能编号 (1-3):")
                         root.destroy()
@@ -62,7 +62,14 @@ class Shop:
                             self.money -= item['price']
                             cs[skill_number - 1] = item['name']  # 替换技能
                         else:
-                            messagebox.showinfo("无效输入", "请输入有效的技能编号 (1-3)。")
+                            messagebox.showinfo("无效输入", "请输入有效的技能编号 (1-3)。")"""
+                        money[n] -= item['price']
+                        self.money -= item['price']
+                        cs[0] = item['name']  # 替换技能
+                        root = tk.Tk()
+                        root.withdraw()  # 隐藏主窗口
+                        messagebox.showinfo("购买成功", "新技能已经装备到一号技能位了")
+                        root.destroy()
                     else:
                         root = tk.Tk()
                         root.withdraw()  # 隐藏主窗口
