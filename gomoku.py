@@ -199,9 +199,9 @@ class Gomoku:
                         # 技能一
                         if self.side == 1 and self.n == 1 and self.cr_s[0] > 0:
                             self.flags[0] = True
-                            self.cr_s[0] -= 1
                             self.k += 2
-                            self.u1_cs[0].ability(self.w_color, self.over_pos)
+                            self.u1_cs[0].ability(self.w_color, 0, 0, self.over_pos, self.m)
+                            self.cr_s[0] -= 1
                             self.flags[0] = False
                         # 技能二
                         if self.side == 1 and self.n == 2 and self.cr_s[1] > 0:
@@ -212,9 +212,9 @@ class Gomoku:
                         # 技能四
                         if self.side == 2 and self.n == 1 and self.cr_s[3] > 0:
                             self.flags[3] = True
-                            self.cr_s[3] -= 1
                             self.k += 1
-                            self.u2_cs[0].ability(self.b_color, self.over_pos)
+                            self.u2_cs[0].ability(self.b_color, 0, 0, self.over_pos, self.m)
+                            self.cr_s[3] -= 1
                             self.flags[3] = False
                         # 技能五
                         if self.side == 2 and self.n == 2 and self.cr_s[4] > 0:
@@ -253,11 +253,11 @@ class Gomoku:
                                         break
                             self.flags[i] = False
                         if i == 2:
-                            self.over_pos = self.u1_cs[2].ability(x2, y2, self.over_pos, self.m)
+                            self.over_pos = self.u1_cs[2].ability(self.w_color, x2, y2, self.over_pos, self.m)
                             self.cr_s[2] -= 1
                             self.flags[i] = False
                         if i == 5:
-                            self.over_pos = self.u2_cs[2].ability(x2, y2, self.over_pos, self.m)
+                            self.over_pos = self.u2_cs[2].ability(self.b_color, x2, y2, self.over_pos, self.m)
                             self.cr_s[5] -= 1
                             self.flags[i] = False
 
