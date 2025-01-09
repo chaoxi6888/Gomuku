@@ -173,7 +173,7 @@ class Gomoku:
                                        self.u1_cs, self.u2_cs, self.abilities):
                 self.round += 1
                 # 第二回合结束才开启商店
-                if 2 < self.round <= 4:
+                if 2 <= self.round <= 4:
                     self.enter_shop1 = True  # 进入商店
                     self.enter_shop2 = True
                 if self.round > 4:
