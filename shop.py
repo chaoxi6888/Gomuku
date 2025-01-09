@@ -18,7 +18,8 @@ class Shop:
             item = {
                 "name": card.name,
                 "price": card.price,
-                "rect": pygame.Rect(card.x, card.y, 100, 100)
+                "rect": pygame.Rect(card.x-28, card.y-2, 100, 100),
+                "image": card.shop_image
             }
             items.append(item)
         return items
@@ -26,15 +27,15 @@ class Shop:
     def create_buttons(self):
         buttons = []
         for item in self.items:
-            button_rect = pygame.Rect(item["rect"].x + 10, item["rect"].y + 170, 80, 40)
+            button_rect = pygame.Rect(item["rect"].x + 38, item["rect"].y + 170, 80, 40)
             buttons.append((button_rect, item))
         return buttons
 
     def draw(self):
         self.screen.blit(self.background_image, (0, 0))
         for item in self.items:
-            pygame.draw.rect(self.screen, (0, 0, 255), item["rect"])
-            self.draw_text(f"{item['name']} - {item['price']}", item["rect"].x, item["rect"].y + 120)
+            self.screen.blit(item["image"], item["rect"])  # 绘制图像
+            self.draw_text(f"cost-{item['price']}", item["rect"].x+40, item["rect"].y + 140)
         for button_rect, _ in self.buttons:
             pygame.draw.rect(self.screen, (0, 255, 0), button_rect)
             self.draw_text("Buy", button_rect.x + 15, button_rect.y + 10)
