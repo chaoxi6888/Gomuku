@@ -240,7 +240,6 @@ class Gomoku:
                                     if pos[1] == self.w_color:
                                         self.over_pos.remove([[x2, y2], self.w_color])
                                         self.over_pos.append([[x2, y2], self.b_color])
-                                        self.music.play_sound()  # 播放音效
                                         self.cr_s[1] -= 1
                                         break
                             self.flags[i] = False
