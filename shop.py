@@ -48,7 +48,7 @@ class Shop:
         self.screen.blit(text_surface, (x, y))
         self.screen.blit(text_surface1, (10, 10))
 
-    def handle_event(self, event, cs):
+    def handle_event(self, event, cs, money, n):
         if event.type == pygame.MOUSEBUTTONDOWN:
             for button_rect, item in self.buttons:
                 if button_rect.collidepoint(event.pos):
@@ -58,9 +58,9 @@ class Shop:
                         skill_number = simpledialog.askinteger("替换技能", "输入要替换的技能编号 (1-3):")
                         root.destroy()
                         if skill_number in [1, 2, 3]:
+                            money[n] -= item['price']
                             self.money -= item['price']
                             cs[skill_number - 1] = item['name']  # 替换技能
-                            print(f"用 {item['name']} 替换了技能 {skill_number}，花费 ${item['price']}")
                         else:
                             messagebox.showinfo("无效输入", "请输入有效的技能编号 (1-3)。")
                     else:

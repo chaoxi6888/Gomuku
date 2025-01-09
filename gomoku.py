@@ -337,7 +337,7 @@ class Gomoku:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
-                shop1.handle_event(event, self.u1_cs)
+                shop1.handle_event(event, self.u1_cs, self.money, 0)
             shop1.draw()
             pygame.display.flip()
             # 检查是否需要退出商店界面
@@ -353,7 +353,7 @@ class Gomoku:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
-                shop2.handle_event(event, self.u2_cs)
+                shop2.handle_event(event, self.u2_cs, self.money, 1)
             shop2.draw()
             pygame.display.flip()
             # 检查是否需要退出商店界面
