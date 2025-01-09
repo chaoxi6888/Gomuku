@@ -25,9 +25,20 @@ class Cards:
             self.name = 'ability2'
             self.description = '替换敌方棋子'
 
-        def ability(self, color, over_pos, x1, y1, m):
+        def ability(self, color, x2, y2, over_pos, m):
             # 技能2可以将一个敌方棋子替换为我方棋子
-            {}
+            for pos in over_pos:
+                if pos[0] == [x2, y2]:
+                    if pos[1] == color:
+                        over_pos.remove([[x2, y2], color])
+                        if color == [255, 255, 255]:
+                            over_pos.append([[x2, y2], [0, 0, 0]])
+                            return True
+                        if color == [0, 0, 0]:
+                            over_pos.append([[x2, y2], [255, 255, 255]])
+                            return True
+                        break
+            return False
 
     class Ability3:
         def __init__(self):
@@ -66,9 +77,15 @@ class Cards:
             self.name = 'ability5'
             self.description = '消去一个任意敌方棋子'
 
-        def ability(self, x1, y1, color, over_pos, music):
-            # 技能5可以将一个敌方棋子替换为我方棋子
-            {}
+        def ability(self, color, x2, y2, over_pos, m):
+            # 技能5可以将一个敌方棋子消除
+            for pos in over_pos:
+                if pos[0] == [x2, y2]:
+                    if pos[1] == color:
+                        over_pos.remove([[x2, y2], color])
+                        return True
+                    break
+            return False
 
     class Ability6:
         def __init__(self):
@@ -132,7 +149,7 @@ class Cards:
         def ability(self, color, center_x, center_y, over_pos, m):
             # 技能10可以消去一个5*5十字范围的棋子
             over_pos1 = [pos for pos in over_pos if not (
-                    (center_x - 2*m <= pos[0][0] <= center_x + 2*m and pos[0][1] == center_y) or
-                    (center_y - 2*m <= pos[0][1] <= center_y + 2*m and pos[0][0] == center_x)
+                    (center_x - 2 * m <= pos[0][0] <= center_x + 2 * m and pos[0][1] == center_y) or
+                    (center_y - 2 * m <= pos[0][1] <= center_y + 2 * m and pos[0][0] == center_x)
             )]
             return over_pos1

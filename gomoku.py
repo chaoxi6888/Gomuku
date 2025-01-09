@@ -37,7 +37,7 @@ class Gomoku:
         self.ability3 = self.cards.Ability3()
         self.ability4 = self.cards.Ability4()
         self.ability5 = self.cards.Ability5()
-        self.ability6 = self.cards.Ability10()
+        self.ability6 = self.cards.Ability6()
         self.abilities = [self.ability1, self.ability2, self.ability3, self.ability4, self.ability5, self.ability6]
         # 创建一个image对象
         self.image = Image()
@@ -235,21 +235,13 @@ class Gomoku:
                     elif self.click_check_board(xt, yt) and not b:
                         x2, y2 = self.image.find_pos(xt, yt, self.b, self.diff, self.w, self.h, self.m, self.distance)
                         if i == 1:
-                            for pos in self.over_pos:
-                                if pos[0] == [x2, y2]:
-                                    if pos[1] == self.w_color:
-                                        self.over_pos.remove([[x2, y2], self.w_color])
-                                        self.over_pos.append([[x2, y2], self.b_color])
-                                        self.cr_s[1] -= 1
-                                        break
+                            if self.u1_cs[1].ability(self.w_color, x2, y2, self.over_pos, self.m):
+                                self.cr_s[i] -= 1
                             self.flags[i] = False
                         if i == 4:
-                            for pos in self.over_pos:
-                                if pos[0] == [x2, y2]:
-                                    if pos[1] == self.b_color:
-                                        self.over_pos.remove([[x2, y2], self.b_color])
-                                        self.cr_s[4] -= 1
-                                        break
+                            if self.u2_cs[1].ability(self.b_color, x2, y2, self.over_pos, self.m):
+                                self.k += 1
+                                self.cr_s[i] -= 1
                             self.flags[i] = False
                         if i == 2:
                             self.over_pos = self.u1_cs[2].ability(self.w_color, x2, y2, self.over_pos, self.m)
