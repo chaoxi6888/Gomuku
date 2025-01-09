@@ -3,7 +3,7 @@ import pygame
 
 class Cards:
     def __init__(self):
-        self.shop = [self.Ability7(), self.Ability8(), self.Ability9(), self.Ability10()]
+        self.shop_list = [self.Ability7(), self.Ability8(), self.Ability9(), self.Ability10()]
 
     class Ability1:
         def __init__(self):
@@ -108,6 +108,9 @@ class Cards:
         def __init__(self):
             self.image = pygame.image.load('image/ability7.png')
             self.name = 'ability7'
+            self.price = 70
+            self.x = 230
+            self.y = 80
             self.description = '消去一行的棋子'
 
         def ability(self, color, lis, row, over_pos, m):
@@ -119,6 +122,9 @@ class Cards:
         def __init__(self):
             self.image = pygame.image.load('image/ability8.png')
             self.name = 'ability8'
+            self.price = 70
+            self.x = 485
+            self.y = 80
             self.description = '消去一列的棋子'
 
         def ability(self, color, lis, row, over_pos, m):
@@ -130,6 +136,9 @@ class Cards:
         def __init__(self):
             self.image = pygame.image.load('image/ability9.png')
             self.name = 'ability9'
+            self.price = 150
+            self.x = 740
+            self.y = 80
             self.description = '消去一个对角线的棋子'
 
         def ability(self, color, center_x, center_y, over_pos, m):
@@ -144,6 +153,9 @@ class Cards:
         def __init__(self):
             self.image = pygame.image.load('image/ability10.png')
             self.name = 'ability10'
+            self.price = 150
+            self.x = 230
+            self.y = 350
             self.description = '消去一个5*5十字范围的的棋子'
 
         def ability(self, color, center_x, center_y, over_pos, m):

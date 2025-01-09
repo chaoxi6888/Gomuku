@@ -2,20 +2,26 @@ import pygame
 
 
 class Shop:
-    def __init__(self, money):
+    def __init__(self, money, cards):
         self.money = money
+        self.cards = cards  # 接收 Cards 类的实例
         self.screen = pygame.display.set_mode((1000, 600))
         self.font = pygame.font.Font(None, 36)
         self.background_image = pygame.image.load('image/shop.png')
-        self.items = [
-            {"name": "Item 1", "price": 100, "rect": pygame.Rect(230, 80, 100, 100)},
-            {"name": "Item 2", "price": 200, "rect": pygame.Rect(485, 80, 100, 100)},
-            {"name": "Item 3", "price": 300, "rect": pygame.Rect(740, 80, 100, 100)},
-            {"name": "Item 4", "price": 100, "rect": pygame.Rect(230, 350, 100, 100)},
-            {"name": "Item 5", "price": 200, "rect": pygame.Rect(485, 350, 100, 100)},
-            {"name": "Item 6", "price": 300, "rect": pygame.Rect(740, 350, 100, 100)},
-        ]
+        self.items = self.load_items_from_cards()  # 从 Cards 类加载商店列表
         self.buttons = self.create_buttons()
+
+    def load_items_from_cards(self):
+        # 从 Cards 类加载商店列表
+        items = []
+        for card in self.cards.shop_list:
+            item = {
+                "name": card.name,
+                "price": card.price,
+                "rect": pygame.Rect(card.x, card.y, 100, 100)
+            }
+            items.append(item)
+        return items
 
     def create_buttons(self):
         buttons = []

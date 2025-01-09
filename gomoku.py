@@ -337,7 +337,7 @@ class Gomoku:
     def shop_screen1(self):
         # 黑方的商店
         pygame.display.set_caption('黑方shop')
-        shop1 = Shop(self.money[0])
+        shop1 = Shop(self.money[0], self.cards)
         while not self.shop1_closed:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -353,7 +353,7 @@ class Gomoku:
     def shop_screen2(self):
         # 白方的商店
         pygame.display.set_caption('白方shop')
-        shop2 = Shop(self.money[1])
+        shop2 = Shop(self.money[1], self.cards)
         while not self.shop2_closed:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
