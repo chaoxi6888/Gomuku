@@ -100,7 +100,7 @@ class Cards:
 
     class Ability8:
         def __init__(self):
-            self.image = pygame.image.load('image/ability6.png')
+            self.image = pygame.image.load('image/ability8.png')
             self.name = 'ability8'
             self.description = '消去一列的棋子'
 
@@ -111,7 +111,7 @@ class Cards:
 
     class Ability9:
         def __init__(self):
-            self.image = pygame.image.load('image/ability6.png')
+            self.image = pygame.image.load('image/ability9.png')
             self.name = 'ability9'
             self.description = '消去一个对角线的棋子'
 
