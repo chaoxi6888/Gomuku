@@ -1,6 +1,5 @@
 import pygame
 
-
 class Shop:
     def __init__(self, money, cards):
         self.money = money
@@ -50,4 +49,8 @@ class Shop:
         if event.type == pygame.MOUSEBUTTONDOWN:
             for button_rect, item in self.buttons:
                 if button_rect.collidepoint(event.pos):
-                    print(f"Bought {item['name']} for ${item['price']}")
+                    if self.money >= item['price']:
+                        self.money -= item['price']
+                        print(f"Bought {item['name']} for ${item['price']}")
+                    else:
+                        print("Not enough money")

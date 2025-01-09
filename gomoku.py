@@ -75,14 +75,14 @@ class Gomoku:
         self.cr_s = [0, 0, 0, 0, 0, 0]
         # 初始技能槽列表标志
         self.flags = [False, False, False, False, False, False]
-        # 商店关闭标志
-        self.shop1_closed = False
-        self.shop2_closed = False
         self.last_esc_time = 0  # 初始化 ESC 键的计时器
 
         while True:
             # 清屏
             self.screen.fill(self.settings.screen_color)
+            # 商店关闭标志
+            self.shop1_closed = False
+            self.shop2_closed = False
             while self.enter_shop1 or self.enter_shop2:
                 if self.enter_shop1:
                     self.shop_screen1()
