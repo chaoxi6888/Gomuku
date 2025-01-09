@@ -80,6 +80,7 @@ class Gomoku:
         # 初始技能槽列表标志
         self.flags = [False, False, False, False, False, False]
         self.last_esc_time = 0  # 初始化 ESC 键的计时器
+        self.bflag = [False, False]
 
         while True:
             # 清屏
@@ -175,7 +176,7 @@ class Gomoku:
                                        self.u1_cs, self.u2_cs, self.abilities):
                 self.round += 1
                 # 第二回合结束才开启商店
-                if  self.round == 4:
+                if self.round == 4:
                     self.enter_shop1 = True  # 进入商店
                     self.enter_shop2 = True
                 if self.round > 4:
@@ -213,11 +214,14 @@ class Gomoku:
                     if self.click_check_cards_board(xt, yt):
                         # 技能一
                         if self.side == 1 and self.n == 1 and self.cr_s[0] > 0:
-                            self.flags[0] = True
-                            self.k += 2
-                            self.u1_cs[0].ability(self.w_color, 0, 0, self.over_pos, self.m)
-                            self.cr_s[0] -= 1
-                            self.flags[0] = False
+                            if not self.bflag[0]:
+                                self.flags[0] = True
+                                self.k += 2
+                                self.u1_cs[0].ability(self.w_color, 0, 0, self.over_pos, self.m)
+                                self.cr_s[0] -= 1
+                                self.flags[0] = False
+                            elif self.bflag[0]:
+                                self.flags[0] = True
                         # 技能二
                         if self.side == 1 and self.n == 2 and self.cr_s[1] > 0:
                             self.flags[1] = True
@@ -226,11 +230,14 @@ class Gomoku:
                             self.flags[2] = True
                         # 技能四
                         if self.side == 2 and self.n == 1 and self.cr_s[3] > 0:
-                            self.flags[3] = True
-                            self.k += 1
-                            self.u2_cs[0].ability(self.b_color, 0, 0, self.over_pos, self.m)
-                            self.cr_s[3] -= 1
-                            self.flags[3] = False
+                            if not self.bflag[1]:
+                                self.flags[3] = True
+                                self.k += 1
+                                self.u2_cs[0].ability(self.b_color, 0, 0, self.over_pos, self.m)
+                                self.cr_s[3] -= 1
+                                self.flags[3] = False
+                            elif self.bflag[1]:
+                                self.flags[3] = True
                         # 技能五
                         if self.side == 2 and self.n == 2 and self.cr_s[4] > 0:
                             self.flags[4] = True
@@ -265,6 +272,14 @@ class Gomoku:
                         if i == 5:
                             self.over_pos = self.u2_cs[2].ability(self.b_color, x2, y2, self.over_pos, self.m)
                             self.cr_s[5] -= 1
+                            self.flags[i] = False
+                        if i == 0 and self.bflag[0]:
+                            self.over_pos = self.u1_cs[0].ability(self.w_color, x2, y2, self.over_pos, self.m)
+                            self.cr_s[0] -= 1
+                            self.flags[i] = False
+                        if i == 3 and self.bflag[1]:
+                            self.over_pos = self.u2_cs[0].ability(self.b_color, x2, y2, self.over_pos, self.m)
+                            self.cr_s[3] -= 1
                             self.flags[i] = False
 
             # 调用延长时间函数
@@ -337,7 +352,7 @@ class Gomoku:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
-                shop1.handle_event(event, self.u1_cs, self.money, 0)
+                shop1.handle_event(event, self.u1_cs, self.money, 0, self.bflag)
             shop1.draw()
             pygame.display.flip()
             # 检查是否需要退出商店界面
@@ -353,7 +368,7 @@ class Gomoku:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
-                shop2.handle_event(event, self.u2_cs, self.money, 1)
+                shop2.handle_event(event, self.u2_cs, self.money, 1, self.bflag)
             shop2.draw()
             pygame.display.flip()
             # 检查是否需要退出商店界面

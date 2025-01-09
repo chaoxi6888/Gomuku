@@ -48,7 +48,7 @@ class Shop:
         self.screen.blit(text_surface, (x, y))
         self.screen.blit(text_surface1, (10, 10))
 
-    def handle_event(self, event, cs, money, n):
+    def handle_event(self, event, cs, money, n, bflag):
         if event.type == pygame.MOUSEBUTTONDOWN:
             for button_rect, item in self.buttons:
                 if button_rect.collidepoint(event.pos):
@@ -66,6 +66,7 @@ class Shop:
                         money[n] -= item['price']
                         self.money -= item['price']
                         cs[0] = item['name']  # 替换技能
+                        bflag[n] = True
                         root = tk.Tk()
                         root.withdraw()  # 隐藏主窗口
                         messagebox.showinfo("购买成功", "新技能已经装备到一号技能位了")

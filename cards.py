@@ -18,6 +18,7 @@ class Cards:
                 if over_pos[i][1] == color and count > 0:  # 假设我们要移除白色棋子
                     over_pos.pop(i)
                     count -= 1
+            return over_pos
 
     class Ability2:
         def __init__(self):
@@ -70,6 +71,7 @@ class Cards:
                 if over_pos[i][1] == color and count > 0:  # 假设我们要移除白色棋子
                     over_pos.pop(i)
                     count -= 1
+            return over_pos
 
     class Ability5:
         def __init__(self):
