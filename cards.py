@@ -125,7 +125,7 @@ class Cards:
 
     class Ability10:
         def __init__(self):
-            self.image = pygame.image.load('image/ability6.png')
+            self.image = pygame.image.load('image/ability10.png')
             self.name = 'ability10'
             self.description = '消去一个5*5十字范围的的棋子'
 
