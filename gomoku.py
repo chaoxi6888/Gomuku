@@ -66,12 +66,10 @@ class Gomoku:
         self.enter_shop2 = False  # 进入白方商店标志
         self.clock = pygame.time.Clock()  # 创建一个Clock对象
         self.clock.tick(60)  # 控制游戏以60帧每秒运行
-        self.tim = 0
         # 棋盘要使用的参数
         self.over_pos = []  # 表示已经落子的位置
         self.w_color = self.settings.white_color  # 白棋颜色
         self.b_color = self.settings.black_color  # 黑棋颜色
-        self.flag = False
         self.k = 0
         # 初始化技能可使用次数
         self.cr_s = [0, 0, 0, 0, 0, 0]
@@ -274,14 +272,6 @@ class Gomoku:
 
         # 游戏结束生成积分板
         self.game_over_screen()
-
-    def time_last(self):
-        # 鼠标左键延时作用
-        if self.flag:
-            self.tim += 1
-        if self.tim % 50 == 0:  # 延时50ms
-            self.flag = False
-            self.tim = 0
 
     def click_check_board(self, x, y):
         # 判断鼠标是否在棋盘范围内
