@@ -98,14 +98,14 @@ class Gamelogic:
                 flag2[0] = True
                 return True
         if gameround == 2:
-            if score_b == 10:  # 40
+            if score_b == 40:  # 40
                 money[0] += 100
                 money[1] += 70
                 user1_cs[1] = abilities[1]  # 黑方获得技能二
                 user2_cs[1] = abilities[4]  # 白方获得技能五
                 flag1[1] = True
                 return True
-            if score_w == 10:
+            if score_w == 40:
                 money[1] += 100
                 money[0] += 70
                 user1_cs[1] = abilities[4]  # 黑方获得技能五
@@ -113,14 +113,14 @@ class Gamelogic:
                 flag2[1] = True
                 return True
         if gameround == 3:
-            if score_b == 10:  # 90
+            if score_b == 90:  # 90
                 money[0] += 100
                 money[1] += 70
                 user1_cs[2] = abilities[2]  # 黑方获得技能三
                 user2_cs[2] = abilities[5]  # 白方获得技能六
                 flag1[2] = True
                 return True
-            if score_w == 10:
+            if score_w == 90:
                 money[1] += 100
                 money[0] += 70
                 user1_cs[2] = abilities[5]  # 黑方获得技能六
