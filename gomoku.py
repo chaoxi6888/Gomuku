@@ -37,7 +37,7 @@ class Gomoku:
         self.ability3 = self.cards.Ability3()
         self.ability4 = self.cards.Ability4()
         self.ability5 = self.cards.Ability5()
-        self.ability6 = self.cards.Ability6()
+        self.ability6 = self.cards.Ability10()
         self.abilities = [self.ability1, self.ability2, self.ability3, self.ability4, self.ability5, self.ability6]
         # 创建一个image对象
         self.image = Image()

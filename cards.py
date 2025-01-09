@@ -132,7 +132,7 @@ class Cards:
         def ability(self, color, center_x, center_y, over_pos, m):
             # 技能10可以消去一个5*5十字范围的棋子
             over_pos1 = [pos for pos in over_pos if not (
-                    (center_x - m <= pos[0][0] <= center_x + m and pos[0][1] == center_y) or
-                    (center_y - m <= pos[0][1] <= center_y + m and pos[0][0] == center_x)
+                    (center_x - 2*m <= pos[0][0] <= center_x + 2*m and pos[0][1] == center_y) or
+                    (center_y - 2*m <= pos[0][1] <= center_y + 2*m and pos[0][0] == center_x)
             )]
             return over_pos1
