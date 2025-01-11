@@ -2,7 +2,6 @@
 import pygame
 import sys
 # 调用常用关键字常量
-from pygame.locals import QUIT, KEYDOWN
 from settings import Settings
 from gamelogic import Gamelogic
 from image import Image
@@ -214,9 +213,14 @@ class Gomoku:
             for event in pygame.event.get():
                 self.side = 0
                 self.n = 0
-                if event.type in (QUIT, KEYDOWN):
+                if event.type == pygame.QUIT:
+                    pygame.quit()
                     sys.exit()
-                if event.type == pygame.MOUSEBUTTONDOWN:
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        pygame.quit()
+                        sys.exit()
+                elif event.type == pygame.MOUSEBUTTONDOWN:
                     # 检查鼠标点击是否在指定区域内
                     xt, yt = event.pos[0], event.pos[1]
                     if self.click_check_cards_board(xt, yt):
